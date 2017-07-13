@@ -1,0 +1,7 @@
+#+TITLE: Sistema certificado de decisión proposicional basado en polinomios
+
+Este repositorio contiene el código correspondiente al artículo [[./doc/CLAI2009.pdf][Sistema
+certificado de decisión proposicional basado en polinomios]] presentado en el
+CLAI2009 (Workshop on Computational Logic and Artificial Intelligence).
+
+

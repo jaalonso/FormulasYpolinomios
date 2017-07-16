@@ -78,7 +78,7 @@ r  = Atom "r"
 no :: FProp -> FProp
 no = Neg
 
--- | 'f ∨ g' es la disyunción de f y g
+-- | @f@ '∨' @g@ es la disyunción de @f@ y @g@.
 (∨) :: FProp -> FProp -> FProp
 (∨)   = Disj
 infixr 5 ∨

@@ -1114,9 +1114,11 @@ palomar = [-- La paloma 1 está en alguna hueco:
 -- ---------------------------------------------------------------------
 
 -- |
--- 1. "Zhegalkin polynomial" en Wikipedia.
--- 2. "Conservative retractions of propositional logic theories by means of
---    boolean derivatives. Theoretical foundations"
--- 3. POLYBORI-A_Grobner_basis_framework_for_Boolean_polynomials.pdf
--- 4. M. Clegg, J. Edmonds y R. Impagliazzo (1996). Using the Groebner
---    basis algorithm to find proofs of unsatisfiability. pp. 174–183.
+-- 
+-- * <https://en.wikipedia.org/wiki/Zhegalkin_polynomial Zhegalkin polynomial>
+--   en Wikipedia.
+-- * "Conservative retractions of propositional logic theories by means of
+--   boolean derivatives. Theoretical foundations"
+-- * POLYBORI-A_Grobner_basis_framework_for_Boolean_polynomials.pdf
+-- * M. Clegg, J. Edmonds y R. Impagliazzo (1996). Using the Groebner
+--   basis algorithm to find proofs of unsatisfiability. pp. 174–183.

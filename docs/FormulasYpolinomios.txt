@@ -702,6 +702,19 @@ prop_deltaRefutableSop :: [Polinomio] -> Bool
 deltaRefutablePSop :: [FProp] -> Bool
 prop_adecuacion_completitud_deltaPSop :: [FProp] -> Bool
 palomar :: [FProp]
+
+-- | <ul>
+--   <li><a>Zhegalkin polynomial</a> en Wikipedia.</li>
+--   <li>"Conservative retractions of propositional logic theories by means
+--   of boolean derivatives. Theoretical foundations"</li>
+--   
+--   <li>POLYBORI-A_Grobner_basis_framework_for_Boolean_polynomials.pdf</li>
+--   <li>M. Clegg, J. Edmonds y R. Impagliazzo (1996). Using the Groebner
+--   basis algorithm to find proofs of unsatisfiability. pp. 174–183.</li>
+--   </ul>
+--   
+--   Sevilla, 16 de julio de 2017
+fact :: Int -> Int
 instance GHC.Classes.Ord CLAI2009.Polinomio
 instance GHC.Classes.Eq CLAI2009.Polinomio
 instance GHC.Classes.Ord CLAI2009.Monomio

@@ -1,7 +1,7 @@
 
 ./test/Doctest.hs,0
 
-./src/CLAI2009.hs,8018
+./src/CLAI2009.hs,8060
 module CLAI2009 CLAI200917,18
 type SimboloProposicional SimboloProposicional37,38
 data FProp FProp45,46
@@ -217,6 +217,8 @@ prop_adecuacion_completitud_deltaPSop prop_adecuacion_completitud_deltaPSop105
 prop_adecuacion_completitud_deltaPSop prop_adecuacion_completitud_deltaPSop1055,1056
 palomar palomar1062,1063
 palomar palomar1063,1064
+fact fact1127,1128
+fact fact1128,1129
 
 ./Setup.hs,15
 main main1,2

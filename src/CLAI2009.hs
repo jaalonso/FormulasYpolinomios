@@ -655,37 +655,66 @@ instance Num Polinomio where
   fromInteger = undefined
 
 -- ---------------------------------------------------------------------
--- ** Suma de polinomios
+-- ** Suma de polinomios en Z2/(x1^1-x1,...,xn^2-xn)
 -- ---------------------------------------------------------------------
 
--- (suma p q) es la suma de los polinomios p y q.
+-- | (suma p q) es la suma de los polinomios p y q. Por ejemplo,
+--
+-- >>> suma (P [M ["x"], M ["y"]]) (P [M ["y"], M ["z"]]) 
+-- x+z
+-- >>> suma (P [M ["x"], M ["y"]]) (P [M ["a"], M ["z"]]) 
+-- a+x+y+z
 suma :: Polinomio -> Polinomio -> Polinomio
 suma (P []) (P q) = (P q)
 suma (P p)  (P q) = P (sumaAux p q)
 
+-- | (sumaAux xs ys) es la lista de las sumas de los monomios de xs e
+-- ys. Por ejemplo,
+--
+-- >>> sumaAux [M ["x"], M ["y"]] [M ["y"], M ["z"]] 
+-- [x,z]
+-- >>> sumaAux [M ["x"], M ["y"]] [M ["a"], M ["z"]]
+-- [a,x,y,z]
 sumaAux :: [Monomio] -> [Monomio] -> [Monomio]
-sumaAux [] y      = y
-sumaAux (c:r) y
-    | (elem c y) = sumaAux r (delete c y)
-    | otherwise  = insert c (sumaAux r y)
+sumaAux [] ys      = ys
+sumaAux (x:xs) ys
+    | x `elem` ys = sumaAux xs (delete x ys)
+    | otherwise  = insert x (sumaAux xs ys)
 
+-- | Comprueba que la suma de polinomios está bien definida.
+--
+-- >>> quickCheck prop_suma_bien_definida
+-- +++ OK, passed 100 tests.
 prop_suma_bien_definida :: Polinomio -> Polinomio -> Bool
 prop_suma_bien_definida p q = esPolinomio (p+q)
 
+-- | Comprueba que la suma de polinomios es conmutativa.
+--
+-- >>> quickCheck prop_suma_conmutativa
+-- +++ OK, passed 100 tests.
 prop_suma_conmutativa :: Polinomio -> Polinomio -> Bool
 prop_suma_conmutativa p q = p+q == q+p
 
+-- | Comprueba que la suma de polinomios es conmutativa.
+--
+-- >>> quickCheck prop_suma_asociativa
+-- +++ OK, passed 100 tests.
 prop_suma_asociativa :: Polinomio -> Polinomio -> Polinomio -> Bool
 prop_suma_asociativa p q r = p+(q+r) == (p+q)+r
 
+-- | Comprueba que cero es el elemento neutro de la suma de polinomios.
+--
+-- >>> quickCheck prop_suma_neutro
+-- +++ OK, passed 100 tests.
 prop_suma_neutro :: Polinomio -> Bool
 prop_suma_neutro p = p + cero == p
 
+-- | Comprueba que cada elemento es su simétrico en la suma de polinomios.
+--
+-- >>> quickCheck prop_suma_simetrico
+-- +++ OK, passed 100 tests.
 prop_suma_simetrico :: Polinomio -> Bool
 prop_suma_simetrico p = p+p == cero
-
-prop_distributiva :: Polinomio -> Polinomio -> Polinomio -> Bool
-prop_distributiva p q r = p*(q+r) == (p*q)+(p*r)
 
 -- ---------------------------------------------------------------------
 -- ** Productos de polinomios
@@ -707,6 +736,13 @@ prop_prod_bien_definido p q = esPolinomio (p*q)
 
 prop_prod_conmutativa :: Polinomio -> Polinomio -> Bool
 prop_prod_conmutativa p q = p*q == q*p
+
+-- | Comprueba que la suma de polinomios es distributiva.
+--
+-- >>> quickCheck prop_distributiva
+-- +++ OK, passed 100 tests.
+prop_distributiva :: Polinomio -> Polinomio -> Polinomio -> Bool
+prop_distributiva p q r = p*(q+r) == (p*q)+(p*r)
 
 -- ---------------------------------------------------------------------
 -- ** Derivada de polinomios

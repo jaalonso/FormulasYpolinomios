@@ -536,19 +536,82 @@ polinomios' :: Gen Polinomio
 --   +++ OK, passed 100 tests.
 --   </pre>
 prop_PolinomiosGeneraPolinomios :: Polinomio -> Bool
+
+-- | (suma p q) es la suma de los polinomios p y q. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; suma (P [M ["x"], M ["y"]]) (P [M ["y"], M ["z"]])
+--   x+z
+--   
+--   &gt;&gt;&gt; suma (P [M ["x"], M ["y"]]) (P [M ["a"], M ["z"]])
+--   a+x+y+z
+--   </pre>
 suma :: Polinomio -> Polinomio -> Polinomio
+
+-- | (sumaAux xs ys) es la lista de las sumas de los monomios de xs e ys.
+--   Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; sumaAux [M ["x"], M ["y"]] [M ["y"], M ["z"]]
+--   [x,z]
+--   
+--   &gt;&gt;&gt; sumaAux [M ["x"], M ["y"]] [M ["a"], M ["z"]]
+--   [a,x,y,z]
+--   </pre>
 sumaAux :: [Monomio] -> [Monomio] -> [Monomio]
+
+-- | Comprueba que la suma de polinomios está bien definida.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_suma_bien_definida
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_suma_bien_definida :: Polinomio -> Polinomio -> Bool
+
+-- | Comprueba que la suma de polinomios es conmutativa.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_suma_conmutativa
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_suma_conmutativa :: Polinomio -> Polinomio -> Bool
+
+-- | Comprueba que la suma de polinomios es conmutativa.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_suma_asociativa
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_suma_asociativa :: Polinomio -> Polinomio -> Polinomio -> Bool
+
+-- | Comprueba que cero es el elemento neutro de la suma de polinomios.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_suma_neutro
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_suma_neutro :: Polinomio -> Bool
+
+-- | Comprueba que cada elemento es su simétrico en la suma de polinomios.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_suma_simetrico
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_suma_simetrico :: Polinomio -> Bool
-prop_distributiva :: Polinomio -> Polinomio -> Polinomio -> Bool
 productoMM :: Monomio -> Monomio -> Monomio
 productoMP :: Monomio -> Polinomio -> Polinomio
 producto :: Polinomio -> Polinomio -> Polinomio
 prop_prod_bien_definido :: Polinomio -> Polinomio -> Bool
 prop_prod_conmutativa :: Polinomio -> Polinomio -> Bool
+
+-- | Comprueba que la suma de polinomios es distributiva.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_distributiva
+--   +++ OK, passed 100 tests.
+--   </pre>
+prop_distributiva :: Polinomio -> Polinomio -> Polinomio -> Bool
 deriv :: Polinomio -> Variable -> Polinomio
 prop_deriv_bien_definida :: Polinomio -> Variable -> Bool
 prop_deriv_deriv :: Polinomio -> Variable -> Bool

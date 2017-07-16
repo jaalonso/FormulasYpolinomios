@@ -2,6 +2,19 @@
 -- Sistema certificado de decisión proposicional basado en polinomios.
 -- ---------------------------------------------------------------------
 
+{-|
+Module      : CLAI2009
+Description : Sistema certificado de decisión proposicional basado en polinomios.
+Copyright   : José A. Alonso
+License     : GPL-3
+Maintainer  : JoseA.Alonso@gmail.com
+Stability   : experimental
+
+Código correspondiente al artículo "Sistema certificado de decisión
+proposicional basado en polinomios" presentado en el CLAI2009 (Workshop
+on Computational Logic and Artificial Intelligence).
+-}
+
 module CLAI2009 where
 
 -- ---------------------------------------------------------------------

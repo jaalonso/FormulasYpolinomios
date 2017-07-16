@@ -2,9 +2,16 @@
 -- See Hoogle, http://www.haskell.org/hoogle/
 
 
+-- | Sistema certificado de decisión proposicional basado en polinomios.
+--   
+--   Sistema certificado de decisión proposicional basado en polinomios.
 @package FormulasYpolinomios
 @version 0.1.0.0
 
+
+-- | Código correspondiente al artículo "Sistema certificado de decisión
+--   proposicional basado en polinomios" presentado en el CLAI2009
+--   (Workshop on Computational Logic and Artificial Intelligence).
 module CLAI2009
 
 -- | Los símbolos proposicionales se representan por cadenas.

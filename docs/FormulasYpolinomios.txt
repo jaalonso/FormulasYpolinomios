@@ -339,8 +339,21 @@ variables' :: Gen String
 data Monomio
 M :: [Variable] -> Monomio
 
+-- | Los monomios se escribe incercalando el * entre sus variables. Por
+--   ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; M ["xy","z","u"]
+--   xy*z*u
+--   </pre>
+
 -- | El monomio correspondiente a la lista vacía es el 1 (elemento neutro
 --   del producto).
+--   
+--   <pre>
+--   &gt;&gt;&gt; mUno
+--   1
+--   </pre>
 mUno :: Monomio
 
 -- | La condición de que las variables sean distintas y ordenadas no se
@@ -358,14 +371,6 @@ mUno :: Monomio
 --   False
 --   </pre>
 esMonomio :: Monomio -> Bool
-
--- | Los monomios se escribe incercalando el * entre sus variables. Por
---   ejemplo,
---   
---   <pre>
---   &gt;&gt;&gt; M ["xy","z","u"]
---   xy*z*u
---   </pre>
 
 -- | (monomiosN n) es un generador de monomios con el número de variables
 --   entre 0 y n. Por ejemplo,
@@ -405,9 +410,7 @@ monomios :: Gen Monomio
 --   </pre>
 monomios' :: Gen Monomio
 
--- | <b>Nota</b>. En lo que sigue usa el generador monomio.
---   
---   prop_MonomiosGeneraMonomios comprueba que el generador de monomios
+-- | prop_MonomiosGeneraMonomios comprueba que el generador de monomios
 --   genera monomios. Por ejemplo,
 --   
 --   <pre>

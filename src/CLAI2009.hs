@@ -436,8 +436,21 @@ variables' = listOf1 caracteres
 data Monomio = M [Variable] 
   deriving (Eq, Ord)
 
+-- | Los monomios se escribe incercalando el * entre sus variables. Por
+-- ejemplo,
+--
+-- >>> M ["xy","z","u"] 
+-- xy*z*u
+instance Show Monomio where
+  show (M [])     = "1"
+  show (M [v])    = v
+  show (M (v:vs)) = concat [v, "*", show (M vs)]
+
 -- | El monomio correspondiente a la lista vacía es el 1 (elemento neutro
 -- del producto).
+--
+-- >>> mUno
+-- 1
 mUno :: Monomio
 mUno = M []
 
@@ -453,16 +466,6 @@ mUno = M []
 -- False
 esMonomio :: Monomio -> Bool
 esMonomio (M vs) = vs == sort (nub vs)
-
--- | Los monomios se escribe incercalando el * entre sus variables. Por
--- ejemplo,
---
--- >>> M ["xy","z","u"] 
--- xy*z*u
-instance Show Monomio where
-  show (M [])     = "1"
-  show (M [v])    = v
-  show (M (v:vs)) = concat [v, "*", show (M vs)]
 
 -- | (monomiosN n) es un generador de monomios con el número de variables
 -- entre 0 y n. Por ejemplo,
@@ -508,8 +511,6 @@ monomios' :: Gen Monomio
 monomios' = do xs <- listOf variables
                return (M (sort (nub xs)))
 
--- | __Nota__. En lo que sigue usa el generador monomio.
-
 -- | prop_MonomiosGeneraMonomios comprueba que el generador de monomios
 -- genera monomios. Por ejemplo,
 -- 
@@ -520,7 +521,7 @@ prop_MonomiosGeneraMonomios m = esMonomio m
 
 -- Los monomios son arbitrarios.
 instance Arbitrary Monomio where
-    arbitrary = monomios
+  arbitrary = monomios
 
 -- ---------------------------------------------------------------------
 -- ** Polinomios

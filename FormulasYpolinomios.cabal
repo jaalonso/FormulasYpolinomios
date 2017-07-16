@@ -4,14 +4,16 @@
 
 name:                FormulasYpolinomios
 version:             0.1.0.0
+synopsis:            Sistema certificado de decisión proposicional basado en polinomios.
+description:         Sistema certificado de decisión proposicional basado en polinomios.
 homepage:            https://github.com/jaalonso/FormulasYpolinomios#readme
 bug-reports:         https://github.com/jaalonso/FormulasYpolinomios/issues
 license:             BSD3
 license-file:        LICENSE
 author:              José A. Alonso
 maintainer:          JoseA.Alonso@gmail.com
-copyright:           2015
-category:            test
+copyright:           2017
+category:            Logic
 build-type:          Simple
 cabal-version:       >= 1.10
 

@@ -1,0 +1,27 @@
+name: FormulasYpolinomios
+synopsis: Sistema certificado de decisión proposicional basado en polinomios.
+description: Sistema certificado de decisión proposicional basado en polinomios.
+version: '0.1.0.0'
+category: Logic
+author: José A. Alonso
+maintainer: JoseA.Alonso@gmail.com
+copyright: '2017'
+license: BSD3
+github: jaalonso/FormulasYpolinomios
+extra-source-files:
+- README.org
+dependencies:
+- base >=4.7 && <5
+- QuickCheck
+- doctest
+library:
+  source-dirs: src
+  exposed-modules:
+  - CLAI2009
+tests:
+  doctests:
+    main: Doctest.hs
+    source-dirs: test
+    ghc-options: -threaded
+    dependencies:
+    - doctest-discover

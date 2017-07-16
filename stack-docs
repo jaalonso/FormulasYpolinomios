@@ -1,0 +1,4 @@
+#!/bin/bash -e
+time stack haddock --no-haddock-deps --fast
+doc_root=`stack path --local-doc-root`/$pname*
+cp -ruv $doc_root/* docs/

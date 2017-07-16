@@ -439,6 +439,10 @@ data Monomio = M [Variable]
 -- | Los monomios se escribe incercalando el * entre sus variables. Por
 -- ejemplo,
 --
+-- >>> M []
+-- 1
+-- >>> M ["x"]
+-- x
 -- >>> M ["xy","z","u"] 
 -- xy*z*u
 instance Show Monomio where

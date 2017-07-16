@@ -343,6 +343,12 @@ M :: [Variable] -> Monomio
 --   ejemplo,
 --   
 --   <pre>
+--   &gt;&gt;&gt; M []
+--   1
+--   
+--   &gt;&gt;&gt; M ["x"]
+--   x
+--   
 --   &gt;&gt;&gt; M ["xy","z","u"]
 --   xy*z*u
 --   </pre>

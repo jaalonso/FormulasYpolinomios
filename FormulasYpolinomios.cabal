@@ -1,8 +1,11 @@
+-- This file has been generated from package.yaml by hpack version 0.17.0.
+--
+-- see: https://github.com/sol/hpack
+
 name:                FormulasYpolinomios
 version:             0.1.0.0
--- synopsis:
--- description:
 homepage:            https://github.com/jaalonso/FormulasYpolinomios#readme
+bug-reports:         https://github.com/jaalonso/FormulasYpolinomios/issues
 license:             BSD3
 license-file:        LICENSE
 author:              José A. Alonso
@@ -10,34 +13,37 @@ maintainer:          JoseA.Alonso@gmail.com
 copyright:           2015
 category:            test
 build-type:          Simple
-extra-source-files:  README.org
-cabal-version:       >=1.10
+cabal-version:       >= 1.10
 
-library
-  hs-source-dirs:      src
-  exposed-modules:     CLAI2009
-  build-depends:       base >= 4.7 && < 5
-                     , QuickCheck
-                     , doctest
-  default-language:    Haskell2010
-
--- executable exe
---   hs-source-dirs:      app
---   main-is:             Main.hs
---   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
---   build-depends:       base
---                      , FormulasYpolinomios
---   default-language:    Haskell2010
-
--- test-suite test
---   type:                exitcode-stdio-1.0
---   hs-source-dirs:      test
---   main-is:             Spec.hs
---   build-depends:       base
---                      , FormulasYpolinomios
---   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
---   default-language:    Haskell2010
+extra-source-files:
+    README.org
 
 source-repository head
-  type:     git
+  type: git
   location: https://github.com/jaalonso/FormulasYpolinomios
+
+library
+  hs-source-dirs:
+      src
+  exposed-modules:
+      CLAI2009
+  other-modules:
+      Paths_FormulasYpolinomios
+  build-depends:
+      base >=4.7 && <5
+    , QuickCheck
+    , doctest
+  default-language: Haskell2010
+
+test-suite doctests
+  type: exitcode-stdio-1.0
+  main-is: Doctest.hs
+  hs-source-dirs:
+      test
+  ghc-options: -threaded
+  build-depends:
+      base >=4.7 && <5
+    , QuickCheck
+    , doctest
+    , doctest-discover
+  default-language: Haskell2010

@@ -49,19 +49,19 @@ r :: FProp
 -- | (no f) es la negación de f
 no :: FProp -> FProp
 
--- | <tt>f</tt> '∨' <tt>g</tt> es la disyunción de <tt>f</tt> y <tt>g</tt>.
+-- | (f ∨ g) es la disyunción de <tt>f</tt> y <tt>g</tt>.
 (∨) :: FProp -> FProp -> FProp
 infixr 5 ∨
 
--- | f ∧ g es la conjunción de f y g
+-- | (f ∧ g) es la conjunción de f y g
 (∧) :: FProp -> FProp -> FProp
 infixr 4 ∧
 
--- | f → g es la implicación de f a g
+-- | (f → g) es la implicación de f a g
 (→) :: FProp -> FProp -> FProp
 infixr 3 →
 
--- | f ↔ g es la equivalencia entre f y g
+-- | (f ↔ g) es la equivalencia entre f y g
 (↔) :: FProp -> FProp -> FProp
 infixr 2 ↔
 
@@ -79,7 +79,9 @@ infixr 2 ↔
 --   no no p
 --   </pre>
 
--- | Las interpretaciones como listas de fórmulas atómicas.
+-- | Las interpretaciones son listas de fórmulas atómicas. Las fórmulas de
+--   las interpretaciones se suponen verdaderas y las restantes fórmulas
+--   atómicas se suponen falsas.
 type Interpretacion = [FProp]
 
 -- | (significado f i) es el significado de la fórmula f en la
@@ -94,14 +96,6 @@ type Interpretacion = [FProp]
 --   </pre>
 significado :: FProp -> Interpretacion -> Bool
 
--- | (subconjuntos x) es la lista de los subconjuntos de x. Por ejemplo,
---   
---   <pre>
---   &gt;&gt;&gt; subconjuntos "abc"
---   ["abc","ab","ac","a","bc","b","c",""]
---   </pre>
-subconjuntos :: [a] -> [[a]]
-
 -- | (simbolosPropForm f) es el conjunto formado por todos los símbolos
 --   proposicionales que aparecen en f. Por ejemplo,
 --   
@@ -110,10 +104,59 @@ subconjuntos :: [a] -> [[a]]
 --   [p,q]
 --   </pre>
 simbolosPropForm :: FProp -> [FProp]
+
+-- | (interpretacionesForm f) es la lista de todas las interpretaciones de
+--   la fórmula f. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; interpretacionesForm (p ∧ q → p)
+--   [[],[p],[q],[p,q]]
+--   </pre>
 interpretacionesForm :: FProp -> [Interpretacion]
+
+-- | (esModeloFormula i f) se verifica si la interpretación i es un modelo
+--   de la fórmula f. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; esModeloFormula [r]   ((p ∨ q) ∧ ((no q) ∨ r))
+--   False
+--   
+--   &gt;&gt;&gt; esModeloFormula [p,r] ((p ∨ q) ∧ ((no q) ∨ r))
+--   True
+--   </pre>
 esModeloFormula :: Interpretacion -> FProp -> Bool
+
+-- | (modelosFormula f) es la lista de todas las interpretaciones de la
+--   fórmula f que son modelo de F. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; modelosFormula ((p ∨ q) ∧ ((no q) ∨ r))
+--   [[p],[p,r],[q,r],[p,q,r]]
+--   </pre>
 modelosFormula :: FProp -> [Interpretacion]
+
+-- | (esValida f) se verifica si la fórmula f es válida. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; esValida (p → p)
+--   True
+--   
+--   &gt;&gt;&gt; esValida (p → q)
+--   False
+--   
+--   &gt;&gt;&gt; esValida ((p → q) ∨ (q → p))
+--   True
+--   </pre>
 esValida :: FProp -> Bool
+
+-- | (prop_esValida f) se verifica si las siguiente condiciones son
+--   equivalentes:
+--   
+--   + f es válida + f es consecuencia del conjunto vacío.
+--   
+--   <pre>
+--   prop_esValida
+--   </pre>
 prop_esValida :: FProp -> Bool
 esInsatisfacible :: FProp -> Bool
 esSatisfacible :: FProp -> Bool

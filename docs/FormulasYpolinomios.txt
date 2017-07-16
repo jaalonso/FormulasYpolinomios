@@ -46,10 +46,10 @@ q :: FProp
 -- | Ejemplo de fórmulas.
 r :: FProp
 
--- | <tt>(no f)</tt> es la negación de f
+-- | (no f) es la negación de f
 no :: FProp -> FProp
 
--- | <tt>f ∨ g</tt> es la disyunción de f y g
+-- | 'f ∨ g' es la disyunción de f y g
 (∨) :: FProp -> FProp -> FProp
 infixr 5 ∨
 

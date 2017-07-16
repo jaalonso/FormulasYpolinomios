@@ -64,7 +64,7 @@ instance Show FProp where
     show (Impl p q) = "(" ++ show p ++ " → " ++ show q ++ ")"
     show (Equi p q) = "(" ++ show p ++ " ↔ " ++ show q ++ ")"
 
--- *** Ejemplos de fórmulas atomicas
+-- *** Ejemplos de fórmulas atómicas
 
 -- | Ejemplo de fórmulas.
 p, q, r :: FProp
@@ -74,11 +74,11 @@ r  = Atom "r"
 
 -- *** Conectivas lógicas
 
--- | @(no f)@ es la negación de f 
+-- | (no f) es la negación de f 
 no :: FProp -> FProp
 no = Neg
 
--- | @f ∨ g@ es la disyunción de f y g
+-- | 'f ∨ g' es la disyunción de f y g
 (∨) :: FProp -> FProp -> FProp
 (∨)   = Disj
 infixr 5 ∨

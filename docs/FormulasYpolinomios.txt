@@ -333,13 +333,87 @@ variables :: Gen String
 --   "tmzeu"
 --   </pre>
 variables' :: Gen String
+
+-- | Los monomios son productos de variables distintas y se representan por
+--   listas ordenadas de variables distintas.
 data Monomio
 M :: [Variable] -> Monomio
+
+-- | El monomio correspondiente a la lista vacía es el 1 (elemento neutro
+--   del producto).
 mUno :: Monomio
+
+-- | La condición de que las variables sean distintas y ordenadas no se
+--   recoge en la definición del tipo de dato. Por ello se define el
+--   siguiente reconocedor de monomios. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; esMonomio (M ["x1","x3","z"])
+--   True
+--   
+--   &gt;&gt;&gt; esMonomio (M ["x5","x3","z"])
+--   False
+--   
+--   &gt;&gt;&gt; esMonomio (M ["x1","x1","z"])
+--   False
+--   </pre>
 esMonomio :: Monomio -> Bool
+
+-- | Los monomios se escribe incercalando el * entre sus variables. Por
+--   ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; M ["xy","z","u"]
+--   xy*z*u
+--   </pre>
+
+-- | (monomiosN n) es un generador de monomios con el número de variables
+--   entre 0 y n. Por ejemplo,
+--   
+--   <pre>
+--   &gt; sample (monomiosN 3)
+--   1
+--   s
+--   e*t
+--   hx*w*xn
+--   &gt; sample (monomiosN 10)
+--   at*b*dy*fq*gv*mx*y*z
+--   a*cm*d*f*h*wf*z
+--   b*dw*wx*x*y*z
+--   </pre>
 monomiosN :: Int -> Gen Monomio
+
+-- | monomios es un generador de monomios con el número de variables entre
+--   0 y 3. Por ejemplo,
+--   
+--   <pre>
+--   &gt; sample monomios
+--   nd*q
+--   e
+--   1
+--   </pre>
 monomios :: Gen Monomio
+
+-- | monomios' es un generador de monomios con un número aleatorio de
+--   variables. Por ejemplo,
+--   
+--   <pre>
+--   &gt; sample monomios'
+--   1
+--   kl*o*u
+--   bm*d*k*mk
+--   </pre>
 monomios' :: Gen Monomio
+
+-- | <b>Nota</b>. En lo que sigue usa el generador monomio.
+--   
+--   prop_MonomiosGeneraMonomios comprueba que el generador de monomios
+--   genera monomios. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_MonomiosGeneraMonomios
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_MonomiosGeneraMonomios :: Monomio -> Bool
 data Polinomio
 P :: [Monomio] -> Polinomio

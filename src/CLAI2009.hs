@@ -431,69 +431,90 @@ variables' = listOf1 caracteres
 -- ** Monomios
 -- ---------------------------------------------------------------------
 
--- Los monomios son productos de variables distintas y se representan por
+-- | Los monomios son productos de variables distintas y se representan por
 -- listas ordenadas de variables distintas. 
 data Monomio = M [Variable] 
-               deriving (Eq, Ord)
+  deriving (Eq, Ord)
 
--- El monomio correspondiente a la lista vacía es el 1 (elemento neutro
+-- | El monomio correspondiente a la lista vacía es el 1 (elemento neutro
 -- del producto).
 mUno :: Monomio
 mUno = M []
 
--- La condición de que las variables sean distintas y ordenadas no se
+-- | La condición de que las variables sean distintas y ordenadas no se
 -- recoge en la definición del tipo de dato. Por ello se define el
--- siguiente reconocedor de monomios.
+-- siguiente reconocedor de monomios. Por ejemplo,
+-- 
+-- >>> esMonomio (M ["x1","x3","z"])
+-- True
+-- >>> esMonomio (M ["x5","x3","z"])
+-- False
+-- >>> esMonomio (M ["x1","x1","z"])
+-- False
 esMonomio :: Monomio -> Bool
 esMonomio (M vs) = vs == sort (nub vs)
 
--- Los monomios se escribe incercalando el * entre sus variables. Por
+-- | Los monomios se escribe incercalando el * entre sus variables. Por
 -- ejemplo,
---    *Main> M ["xy","z","u"] 
---    xy*z*u
+--
+-- >>> M ["xy","z","u"] 
+-- xy*z*u
 instance Show Monomio where
-    show (M [])     = "1"
-    show (M [v])    = v
-    show (M (v:vs)) = concat [v, "*", show (M vs)]
+  show (M [])     = "1"
+  show (M [v])    = v
+  show (M (v:vs)) = concat [v, "*", show (M vs)]
 
--- (monomiosN n) es un generador de monomios con el número de variables
+-- | (monomiosN n) es un generador de monomios con el número de variables
 -- entre 0 y n. Por ejemplo,
---    *Main> sample (monomiosN 3)
+--
+-- @
+--    > sample (monomiosN 3)
 --    1
 --    s
 --    e*t
 --    hx*w*xn
---    *Main> sample (monomiosN 10)
+--    > sample (monomiosN 10)
 --    at*b*dy*fq*gv*mx*y*z
 --    a*cm*d*f*h*wf*z
 --    b*dw*wx*x*y*z
+-- @
 monomiosN :: Int -> Gen Monomio
 monomiosN n = do k <- choose (0,n)
                  vs <- vectorOf k variables
                  return (M (sort (nub vs)))
 
--- monomios es un generador de monomios con el número de variables
+-- | monomios es un generador de monomios con el número de variables
 -- entre 0 y 3. Por ejemplo,
---    *Main> sample monomios
+--
+-- @
+--    > sample monomios
 --    nd*q
 --    e
 --    1
+-- @
 monomios :: Gen Monomio
 monomios = monomiosN 3
 
--- monomios' es un generador de monomios con un número aleatorio de
--- variables. Por ejemplo, 
---    *Main> sample monomios'
+-- | monomios' es un generador de monomios con un número aleatorio de
+-- variables. Por ejemplo,
+--
+-- @
+--    > sample monomios'
 --    1
 --    kl*o*u
 --    bm*d*k*mk
+-- @
 monomios' :: Gen Monomio
 monomios' = do xs <- listOf variables
                return (M (sort (nub xs)))
 
--- Nota. En lo que sigue usa el generador monomio.
+-- | __Nota__. En lo que sigue usa el generador monomio.
 
--- Comprobación que el generador de monomios genera monomios.
+-- | prop_MonomiosGeneraMonomios comprueba que el generador de monomios
+-- genera monomios. Por ejemplo,
+-- 
+-- >>> quickCheck prop_MonomiosGeneraMonomios
+-- +++ OK, passed 100 tests.
 prop_MonomiosGeneraMonomios :: Monomio -> Bool
 prop_MonomiosGeneraMonomios m = esMonomio m
 

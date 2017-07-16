@@ -40,9 +40,9 @@ on Computational Logic and Artificial Intelligence).
 </span><a name="line-40"></a><span class="hs-comment">-- | FProp es el tipo de las f&#243;rmulas proposicionales definidas por</span><span>
 </span><a name="line-41"></a><span class="hs-comment">-- </span><span>
 </span><a name="line-42"></a><span class="hs-comment">-- * T y F son f&#243;rmulas</span><span>
-</span><a name="line-43"></a><span class="hs-comment">-- * Si A es una f&#243;rmula, tambi&#233;n lo es -A.</span><span>
-</span><a name="line-44"></a><span class="hs-comment">-- * Si A y B son f&#243;rmulas, entonces (A &amp; B), (A v B), (A --&gt; B) y</span><span>
-</span><a name="line-45"></a><span class="hs-comment">--   (A &lt;--&gt; B) tambi&#233;n lo son.</span><span>
+</span><a name="line-43"></a><span class="hs-comment">-- * Si A es una f&#243;rmula, tambi&#233;n lo es &#172;A.</span><span>
+</span><a name="line-44"></a><span class="hs-comment">-- * Si A y B son f&#243;rmulas, entonces (A &#8743; B), (A &#8744; B), (A &#8594; B) y</span><span>
+</span><a name="line-45"></a><span class="hs-comment">--   (A &#8596; B) tambi&#233;n lo son.</span><span>
 </span><a name="line-46"></a><span class="hs-keyword">data</span><span> </span><a name="FProp"><a href="CLAI2009.html#FProp"><span class="hs-identifier">FProp</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a name="T"><a href="CLAI2009.html#T"><span class="hs-identifier">T</span></a></a><span>
 </span><a name="line-47"></a><span>           </span><span class="hs-glyph">|</span><span> </span><a name="F"><a href="CLAI2009.html#F"><span class="hs-identifier">F</span></a></a><span>
 </span><a name="line-48"></a><span>           </span><span class="hs-glyph">|</span><span> </span><a name="Atom"><a href="CLAI2009.html#Atom"><span class="hs-identifier">Atom</span></a></a><span> </span><a href="CLAI2009.html#SimboloProposicional"><span class="hs-identifier hs-type">SimboloProposicional</span></a><span>
@@ -51,7 +51,7 @@ on Computational Logic and Artificial Intelligence).
 </span><a name="line-51"></a><span>           </span><span class="hs-glyph">|</span><span> </span><a name="Disj"><a href="CLAI2009.html#Disj"><span class="hs-identifier">Disj</span></a></a><span> </span><a href="CLAI2009.html#FProp"><span class="hs-identifier hs-type">FProp</span></a><span> </span><a href="CLAI2009.html#FProp"><span class="hs-identifier hs-type">FProp</span></a><span> </span><span>
 </span><a name="line-52"></a><span>           </span><span class="hs-glyph">|</span><span> </span><a name="Impl"><a href="CLAI2009.html#Impl"><span class="hs-identifier">Impl</span></a></a><span> </span><a href="CLAI2009.html#FProp"><span class="hs-identifier hs-type">FProp</span></a><span> </span><a href="CLAI2009.html#FProp"><span class="hs-identifier hs-type">FProp</span></a><span> </span><span>
 </span><a name="line-53"></a><span>           </span><span class="hs-glyph">|</span><span> </span><a name="Equi"><a href="CLAI2009.html#Equi"><span class="hs-identifier">Equi</span></a></a><span> </span><a href="CLAI2009.html#FProp"><span class="hs-identifier hs-type">FProp</span></a><span> </span><a href="CLAI2009.html#FProp"><span class="hs-identifier hs-type">FProp</span></a><span> </span><span>
-</span><a name="line-54"></a><span>             </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span class="hs-identifier hs-type">Eq</span><span class="hs-special">,</span><span class="hs-identifier hs-type">Ord</span><span class="hs-special">)</span><span>
+</span><a name="line-54"></a><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span class="hs-identifier hs-type">Eq</span><span class="hs-special">,</span><span class="hs-identifier hs-type">Ord</span><span class="hs-special">)</span><span>
 </span><a name="line-55"></a><span>
 </span><a name="line-56"></a><span class="hs-comment">-- | Declaraci&#243;n del procedimiento de escritura de f&#243;rmulas.</span><span>
 </span><a name="line-57"></a><span class="hs-keyword">instance</span><span> </span><span class="hs-identifier hs-type">Show</span><span> </span><a href="CLAI2009.html#FProp"><span class="hs-identifier hs-type">FProp</span></a><span> </span><span class="hs-keyword">where</span><span>

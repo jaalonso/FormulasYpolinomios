@@ -40,9 +40,9 @@ type SimboloProposicional = String
 -- | FProp es el tipo de las fórmulas proposicionales definidas por
 -- 
 -- * T y F son fórmulas
--- * Si A es una fórmula, también lo es -A.
--- * Si A y B son fórmulas, entonces (A & B), (A v B), (A --> B) y
---   (A <--> B) también lo son.
+-- * Si A es una fórmula, también lo es ¬A.
+-- * Si A y B son fórmulas, entonces (A ∧ B), (A ∨ B), (A → B) y
+--   (A ↔ B) también lo son.
 data FProp = T
            | F
            | Atom SimboloProposicional
@@ -51,7 +51,7 @@ data FProp = T
            | Disj FProp FProp 
            | Impl FProp FProp 
            | Equi FProp FProp 
-             deriving (Eq,Ord)
+  deriving (Eq,Ord)
 
 -- | Declaración del procedimiento de escritura de fórmulas.
 instance Show FProp where

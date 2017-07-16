@@ -21,9 +21,9 @@ type SimboloProposicional = String
 --   
 --   <ul>
 --   <li>T y F son fórmulas</li>
---   <li>Si A es una fórmula, también lo es -A.</li>
---   <li>Si A y B son fórmulas, entonces (A &amp; B), (A v B), (A --&gt; B)
---   y (A <a>--</a> B) también lo son.</li>
+--   <li>Si A es una fórmula, también lo es ¬A.</li>
+--   <li>Si A y B son fórmulas, entonces (A ∧ B), (A ∨ B), (A → B) y (A ↔
+--   B) también lo son.</li>
 --   </ul>
 data FProp
 T :: FProp

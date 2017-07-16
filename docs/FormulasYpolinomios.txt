@@ -263,6 +263,17 @@ esConsistente :: [FProp] -> Bool
 --   True
 --   </pre>
 esInconsistente :: [FProp] -> Bool
+
+-- | (esConsecuencia s f) se verifica si f es consecuencia de s. Por
+--   ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; esConsecuencia [p → q, q → r] (p → r)
+--   True
+--   
+--   &gt;&gt;&gt; esConsecuencia [p] (p ∧ q)
+--   False
+--   </pre>
 esConsecuencia :: [FProp] -> FProp -> Bool
 
 -- | (prop_esConsecuencia s f) verifica que son equivalentes:

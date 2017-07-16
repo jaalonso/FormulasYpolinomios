@@ -343,7 +343,7 @@ esInconsistente s =
 -- ** Consecuencia lógica
 -- ---------------------------------------------------------------------
 
--- (esConsecuencia s f) se verifica si f es consecuencia de s. Por 
+-- | (esConsecuencia s f) se verifica si f es consecuencia de s. Por 
 -- ejemplo,
 --
 -- >>> esConsecuencia [p → q, q → r] (p → r)

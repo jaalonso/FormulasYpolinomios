@@ -298,8 +298,8 @@ prop_esConsecuencia :: [FProp] -> FProp -> Bool
 --   </pre>
 equivalentes :: FProp -> FProp -> Bool
 
--- | caracteres es un generador de caracteres de letras minúsculas. Por
---   ejemplo,
+-- | <a>caracteres</a> es un generador de caracteres de letras minúsculas.
+--   Por ejemplo,
 --   
 --   <pre>
 --   &gt; sample caracteres
@@ -308,8 +308,30 @@ equivalentes :: FProp -> FProp -> Bool
 --   <a>r</a>
 --   </pre>
 caracteres :: Gen Char
+
+-- | Las variables se representan por cadenas.
 type Variable = String
+
+-- | <a>variables</a> es un generador de variables de longitud 1 ó 2. Por
+--   ejemplo,
+--   
+--   <pre>
+--   &gt; sample variables
+--   "h"
+--   "yi"
+--   "m"
+--   </pre>
 variables :: Gen String
+
+-- | variables' es un generador de variables de longitud aleatoria, pero no
+--   cero. Por ejemplo,
+--   
+--   <pre>
+--   &gt; sample variables'
+--   "o"
+--   "rte"
+--   "tmzeu"
+--   </pre>
 variables' :: Gen String
 data Monomio
 M :: [Variable] -> Monomio

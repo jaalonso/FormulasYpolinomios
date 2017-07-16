@@ -387,7 +387,7 @@ equivalentes f g = esValida (f ↔ g)
 -- ** Variables
 -- ---------------------------------------------------------------------
 
--- | caracteres es un generador de caracteres de letras minúsculas. Por
+-- | 'caracteres' es un generador de caracteres de letras minúsculas. Por
 -- ejemplo,
 --
 -- @
@@ -399,24 +399,31 @@ equivalentes f g = esValida (f ↔ g)
 caracteres :: Gen Char
 caracteres = chr `fmap` choose (97,122)
 
--- Las variables se representan por cadenas.
+-- | Las variables se representan por cadenas.
 type Variable = String
 
--- variables es un generador de variables de longitud 1 ó 2. Por ejemplo,
---    *Main> sample variables
+-- | 'variables' es un generador de variables de longitud 1 ó 2. Por
+-- ejemplo,
+--
+-- @
+--    > sample variables
 --    "h"
 --    "yi"
 --    "m"
+-- @
 variables :: Gen String
 variables = do k <- choose (1,2)
                vectorOf k caracteres
 
--- variables' es un generador de variables de longitud aleatoria, pero
--- no cero. Por ejemplo, 
---    *Main> sample variables'
+-- | variables' es un generador de variables de longitud aleatoria, pero
+-- no cero. Por ejemplo,
+--
+-- @
+--    > sample variables'
 --    "o"
 --    "rte"
 --    "tmzeu"
+-- @
 variables' :: Gen String
 variables' = listOf1 caracteres
 

@@ -233,10 +233,13 @@ prop_esValida :: FProp -> Bool
 prop_esValida f =
    esValida f == esConsecuencia [] f
 
--- (esInsatisfacible f) se verifica si la fórmula f es insatisfacible. 
--- Por ejemplo, 
---    esInsatisfacible (p ∧ (no p))             ==>  True
---    esInsatisfacible ((p → q) ∧ (q → r))  ==>  False
+-- | (esInsatisfacible f) se verifica si la fórmula f es insatisfacible. 
+-- Por ejemplo,
+--
+-- >>> esInsatisfacible (p ∧ (no p))
+-- True
+-- >>> esInsatisfacible ((p → q) ∧ (q → r))
+-- False
 esInsatisfacible :: FProp -> Bool
 esInsatisfacible f =
     modelosFormula f == []

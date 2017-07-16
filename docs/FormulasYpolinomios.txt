@@ -162,6 +162,17 @@ esValida :: FProp -> Bool
 --   +++ OK, passed 100 tests.
 --   </pre>
 prop_esValida :: FProp -> Bool
+
+-- | (esInsatisfacible f) se verifica si la fórmula f es insatisfacible.
+--   Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; esInsatisfacible (p ∧ (no p))
+--   True
+--   
+--   &gt;&gt;&gt; esInsatisfacible ((p → q) ∧ (q → r))
+--   False
+--   </pre>
 esInsatisfacible :: FProp -> Bool
 esSatisfacible :: FProp -> Bool
 unionGeneral :: Eq a => [[a]] -> [a]

@@ -78,7 +78,7 @@ r  = Atom "r"
 no :: FProp -> FProp
 no = Neg
 
--- | (f ∨ g) es la disyunción de @f@ y @g@.
+-- | (f ∨ g) es la disyunción de f y g.
 (∨) :: FProp -> FProp -> FProp
 (∨)   = Disj
 infixr 5 ∨
@@ -242,88 +242,102 @@ prop_esValida f =
 -- False
 esInsatisfacible :: FProp -> Bool
 esInsatisfacible f =
-    modelosFormula f == []
+  modelosFormula f == []
 
--- (esSatisfacible f) se verifica si f es satisfacible. Por ejemplo, 
---    esSatisfacible (p ∧ (no p))             ==>  False
---    esSatisfacible ((p → q) ∧ (q → r))  ==>  True
+-- | (esSatisfacible f) se verifica si f es satisfacible. Por ejemplo,
+--
+-- >>> esSatisfacible (p ∧ (no p))
+-- False
+-- >>> esSatisfacible ((p → q) ∧ (q → r))
+-- True
 esSatisfacible :: FProp -> Bool
 esSatisfacible f =
-    modelosFormula f /= []
+  modelosFormula f /= []
 
 -- ---------------------------------------------------------------------
 -- ** Interpretaciones de un conjunto de fórmulas
 -- ---------------------------------------------------------------------
 
--- (unionGeneral x) es la unión de los conjuntos de la lista de
--- conjuntos x. Por ejemplo, 
---    unionGeneral []                 ==>  []
---    unionGeneral [[1]]              ==>  [1]
---    unionGeneral [[1],[1,2],[2,3]]  ==>  [1,2,3]
+-- | (unionGeneral x) es la unión de los conjuntos de la lista de
+-- conjuntos x. Por ejemplo,
+--
+-- >>> unionGeneral []
+-- []
+-- >>> unionGeneral [[1]]
+-- [1]
+-- >>> unionGeneral [[1],[1,2],[2,3]]
+-- [1,2,3]
 unionGeneral :: Eq a => [[a]] -> [a]
-unionGeneral []     = []
-unionGeneral (x:xs) = x `union` unionGeneral xs 
+unionGeneral = foldr union []
 
--- (simbolosPropConj s) es el conjunto de los símbolos proposiciones de 
+-- | (simbolosPropConj s) es el conjunto de los símbolos proposiciones de 
 -- s. Por ejemplo,
---    simbolosPropConj [p ∧ q → r, p → s]  ==>  [p,q,r,s]
+--
+-- >>> simbolosPropConj [p ∧ q → r, p → r]
+-- [p,q,r]
 simbolosPropConj :: [FProp] -> [FProp]
-simbolosPropConj s
-    = unionGeneral [simbolosPropForm f | f <- s]
+simbolosPropConj s =
+  unionGeneral [simbolosPropForm f | f <- s]
 
--- (interpretacionesConjunto s) es la lista de las interpretaciones de 
+-- | (interpretacionesConjunto s) es la lista de las interpretaciones de 
 -- s. Por ejemplo,
---    interpretacionesConjunto [p → q, q → r]
---    ==> [[p,q,r],[p,q],[p,r],[p],[q,r],[q],[r],[]]
+--
+-- >>> interpretacionesConjunto [p → q, q → r]
+-- [[],[p],[q],[p,q],[r],[p,r],[q,r],[p,q,r]]
 interpretacionesConjunto :: [FProp] -> [Interpretacion]
 interpretacionesConjunto s =
-    subsequences (simbolosPropConj s)
+  subsequences (simbolosPropConj s)
 
 -- ---------------------------------------------------------------------
 -- ** Modelos de conjuntos de fórmulas
 -- ---------------------------------------------------------------------
 
--- (esModeloConjunto i s) se verifica si i es modelo de s. Por ejemplo, 
---    esModeloConjunto [p,r] [(p ∨ q) ∧ ((no q) ∨ r), q → r]
---    ==> True
---    esModeloConjunto [p,r] [(p ∨ q) ∧ ((no q) ∨ r), r → q]
---    ==> False
+-- | (esModeloConjunto i s) se verifica si i es modelo de s. Por
+-- ejemplo,
+--
+-- >>> esModeloConjunto [p,r] [(p ∨ q) ∧ ((no q) ∨ r), q → r]
+-- True
+-- >>> esModeloConjunto [p,r] [(p ∨ q) ∧ ((no q) ∨ r), r → q]
+-- False
 esModeloConjunto :: Interpretacion -> [FProp] -> Bool
 esModeloConjunto i s =
-    and [esModeloFormula i f | f <- s]
+  and [esModeloFormula i f | f <- s]
 
--- (modelosConjunto s) es la lista de modelos del conjunto s. 
+-- | (modelosConjunto s) es la lista de modelos del conjunto s. 
 -- Por ejemplo,
---    modelosConjunto [(p ∨ q) ∧ ((no q) ∨ r), q → r]
---    ==> [[p,q,r],[p,r],[p],[q,r]]
---    modelosConjunto [(p ∨ q) ∧ ((no q) ∨ r), r → q]
---    ==> [[p,q,r],[p],[q,r]]
+--
+-- >>> modelosConjunto [(p ∨ q) ∧ ((no q) ∨ r), q → r]
+-- [[p],[p,r],[q,r],[p,q,r]]
+-- >>> modelosConjunto [(p ∨ q) ∧ ((no q) ∨ r), r → q]
+-- [[p],[q,r],[p,q,r]]
 modelosConjunto :: [FProp] -> [Interpretacion]
 modelosConjunto s =
-    [i | i <- interpretacionesConjunto s,
-         esModeloConjunto i s]
+  [i | i <- interpretacionesConjunto s
+     , esModeloConjunto i s]
 
 -- ---------------------------------------------------------------------
 -- ** Conjuntos consistentes e inconsistentes de fórmulas
 -- ---------------------------------------------------------------------
 
--- (esConsistente s) se verifica si s es consistente. Por ejemplo, 
---    esConsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r]        
---    ==> True
---    esConsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r, no r]  
---    ==> False
+-- | (esConsistente s) se verifica si s es consistente. Por ejemplo,
+--
+-- >>> esConsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r]        
+-- True
+-- >>> esConsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r, no r]  
+-- False
 esConsistente :: [FProp] -> Bool
 esConsistente s =
-    modelosConjunto s /= []
+  modelosConjunto s /= []
 
--- (esInconsistente s) se verifica si s es inconsistente. Por ejemplo, 
---    esInconsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r]        
---    ==> False
---    esInconsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r, no r]  
---    ==> True
+-- | (esInconsistente s) se verifica si s es inconsistente. Por ejemplo,
+--
+-- >>> esInconsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r]        
+-- False
+-- >>> esInconsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r, no r]  
+-- True
 esInconsistente :: [FProp] -> Bool
 esInconsistente s =
-    modelosConjunto s == []
+  modelosConjunto s == []
 
 -- ---------------------------------------------------------------------
 -- ** Consecuencia lógica
@@ -331,14 +345,25 @@ esInconsistente s =
 
 -- (esConsecuencia s f) se verifica si f es consecuencia de s. Por 
 -- ejemplo,
---    esConsecuencia [p → q, q → r] (p → r)  ==>  True
---    esConsecuencia [p] (p ∧ q)                  ==>  False
+--
+-- >>> esConsecuencia [p → q, q → r] (p → r)
+-- True
+-- >>> esConsecuencia [p] (p ∧ q)
+-- False
 esConsecuencia :: [FProp] -> FProp -> Bool
 esConsecuencia s f =
-    null [i | i <- interpretacionesConjunto (f:s),
-              esModeloConjunto i s,
-              not (esModeloFormula i f)]
+  null [i | i <- interpretacionesConjunto (f:s)
+          , esModeloConjunto i s
+          , not (esModeloFormula i f)]
 
+-- | (prop_esConsecuencia s f) verifica que son equivalentes:
+--
+-- * f es consecuencia de s
+-- * s ∪ {¬f} es inconsistente
+--
+-- >>> quickCheck prop_esConsecuencia
+-- +++ OK, passed 100 tests.
+prop_esConsecuencia :: [FProp] -> FProp -> Bool
 prop_esConsecuencia s f =
    esConsecuencia s f == esInconsistente (Neg f:s)
 
@@ -346,7 +371,11 @@ prop_esConsecuencia s f =
 -- ** Equivalencia de fórmulas
 -- ---------------------------------------------------------------------
 
--- (equivalentes f g) se verifica si las fórmulas f y g son equivalentes
+-- | (equivalentes f g) se verifica si las fórmulas f y g son
+-- equivalentes. Por ejemplo,
+--
+-- >>> equivalentes (p → q) (no p ∨ q)
+-- True
 equivalentes :: FProp -> FProp -> Bool
 equivalentes f g = esValida (f ↔ g)
 
@@ -358,11 +387,15 @@ equivalentes f g = esValida (f ↔ g)
 -- ** Variables
 -- ---------------------------------------------------------------------
 
--- caracteres es un generador de caracteres de letras minúsculas. Por ejemplo,
---    *Main> sample caracteres
+-- | caracteres es un generador de caracteres de letras minúsculas. Por
+-- ejemplo,
+--
+-- @
+--    > sample caracteres
 --    'x'
 --    'n'
 --    'r'
+-- @
 caracteres :: Gen Char
 caracteres = chr `fmap` choose (97,122)
 

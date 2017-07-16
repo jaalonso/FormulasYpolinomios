@@ -380,7 +380,7 @@ equivalentes :: FProp -> FProp -> Bool
 equivalentes f g = esValida (f ↔ g)
 
 -- =====================================================================
--- * Polinomios
+-- * Polinomios en Z2/(x1^1-x1,...,xn^2-xn)
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
@@ -655,7 +655,7 @@ instance Num Polinomio where
   fromInteger = undefined
 
 -- ---------------------------------------------------------------------
--- ** Suma de polinomios en Z2/(x1^1-x1,...,xn^2-xn)
+-- ** Suma de polinomios 
 -- ---------------------------------------------------------------------
 
 -- | (suma p q) es la suma de los polinomios p y q. Por ejemplo,
@@ -720,24 +720,52 @@ prop_suma_simetrico p = p+p == cero
 -- ** Productos de polinomios
 -- ---------------------------------------------------------------------
 
+-- | (productoMM m1 m2) es el producto de los monomios m1 y m2. Por
+-- ejemplo,
+--
+-- >>> productoMM (M ["x","y"]) (M ["y","z"])
+-- x*y*z
 productoMM :: Monomio -> Monomio -> Monomio
 productoMM (M x) (M y) = M (sort (x `union` y))
 
+-- | (productoMP m p) es el producto del monomio m por el polinomio
+-- p. Por ejemplo,
+--
+-- >>> productoMP (M ["x","y"]) (P [M ["a"], M ["y","z"]])
+-- a*x*y+x*y*z
 productoMP :: Monomio -> Polinomio -> Polinomio
 productoMP m1 (P [])     = P []
 productoMP m1 (P (m:ms)) = (P [productoMM m1 m]) + (productoMP m1 (P ms))
 
+-- | (producto p1 p2) es el producto de los polinomios p1 y p2. Por
+-- ejemplo,
+--
+-- >>> producto (P [M ["x","y"], M ["z"]]) (P [M ["a"], M ["y","z"]])
+-- a*x*y+a*z+x*y*z+y*z
+-- >>> producto (P [M ["x","y"], M ["z"]]) (P [M ["x"], M ["y","z"]])
+-- x*y+x*y*z+x*z+y*z
+-- >>> producto (P [M ["x"], M ["y"]]) (P [M ["x"], M ["y"]]) 
+-- x+y
 producto :: Polinomio -> Polinomio -> Polinomio
 producto (P []) _     = P []
 producto (P (m:ms)) q = (productoMP m q) + (producto (P ms) q)
 
+-- | Comprueba que el producto de polinomios está bien definido.
+--
+-- >>> quickCheck prop_prod_bien_definido
+-- +++ OK, passed 100 tests.
 prop_prod_bien_definido :: Polinomio -> Polinomio -> Bool
 prop_prod_bien_definido p q = esPolinomio (p*q)
 
+-- | Comprueba que el producto de polinomios es conmutativo 
+--
+-- >>> quickCheck prop_prod_conmutativa
+-- +++ OK, passed 100 tests.
 prop_prod_conmutativa :: Polinomio -> Polinomio -> Bool
 prop_prod_conmutativa p q = p*q == q*p
 
--- | Comprueba que la suma de polinomios es distributiva.
+-- | Comprueba que el producto de polinomios es distributivo respecto de
+-- la suma.
 --
 -- >>> quickCheck prop_distributiva
 -- +++ OK, passed 100 tests.

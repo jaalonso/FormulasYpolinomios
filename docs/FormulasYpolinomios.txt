@@ -152,7 +152,10 @@ esValida :: FProp -> Bool
 -- | (prop_esValida f) se verifica si las siguiente condiciones son
 --   equivalentes:
 --   
---   + f es válida + f es consecuencia del conjunto vacío.
+--   <ul>
+--   <li>f es válida</li>
+--   <li>f es consecuencia del conjunto vacío.</li>
+--   </ul>
 --   
 --   <pre>
 --   prop_esValida

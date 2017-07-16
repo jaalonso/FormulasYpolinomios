@@ -224,8 +224,8 @@ esValida f =
 -- | (prop_esValida f) se verifica si las siguiente condiciones son
 -- equivalentes:
 --
--- + f es válida
--- + f es consecuencia del conjunto vacío.
+-- * f es válida
+-- * f es consecuencia del conjunto vacío.
 --
 -- prop> prop_esValida
 prop_esValida :: FProp -> Bool

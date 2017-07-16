@@ -227,7 +227,8 @@ esValida f =
 -- * f es válida
 -- * f es consecuencia del conjunto vacío.
 --
--- prop> prop_esValida
+-- >>> quickCheck prop_esValida
+-- +++ OK, passed 100 tests.
 prop_esValida :: FProp -> Bool
 prop_esValida f =
    esValida f == esConsecuencia [] f

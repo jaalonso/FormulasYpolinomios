@@ -158,7 +158,8 @@ esValida :: FProp -> Bool
 --   </ul>
 --   
 --   <pre>
---   prop_esValida
+--   &gt;&gt;&gt; quickCheck prop_esValida
+--   +++ OK, passed 100 tests.
 --   </pre>
 prop_esValida :: FProp -> Bool
 esInsatisfacible :: FProp -> Bool

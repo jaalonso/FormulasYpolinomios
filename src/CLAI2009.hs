@@ -1122,3 +1122,5 @@ palomar = [-- La paloma 1 está en alguna hueco:
 -- * POLYBORI-A_Grobner_basis_framework_for_Boolean_polynomials.pdf
 -- * M. Clegg, J. Edmonds y R. Impagliazzo (1996). Using the Groebner
 --   basis algorithm to find proofs of unsatisfiability. pp. 174–183.
+
+-- | Sevilla, 16 de julio de 2017

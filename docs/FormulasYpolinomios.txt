@@ -49,33 +49,33 @@ r :: FProp
 -- | <tt>(no f)</tt> es la negación de f
 no :: FProp -> FProp
 
--- | <tt>f / g</tt> es la disyunción de f y g
-(\/) :: FProp -> FProp -> FProp
-infixr 5 \/
+-- | <tt>f ∨ g</tt> es la disyunción de f y g
+(∨) :: FProp -> FProp -> FProp
+infixr 5 ∨
 
--- | f / g es la conjunción de f y g
-(/\) :: FProp -> FProp -> FProp
-infixr 4 /\
+-- | f ∧ g es la conjunción de f y g
+(∧) :: FProp -> FProp -> FProp
+infixr 4 ∧
 
--- | f --&gt; g es la implicación de f a g
-(-->) :: FProp -> FProp -> FProp
-infixr 3 -->
+-- | f → g es la implicación de f a g
+(→) :: FProp -> FProp -> FProp
+infixr 3 →
 
--- | f <a>--</a> g es la equivalencia entre f y g
-(<-->) :: FProp -> FProp -> FProp
-infixr 2 <-->
+-- | f ↔ g es la equivalencia entre f y g
+(↔) :: FProp -> FProp -> FProp
+infixr 2 ↔
 
 -- | FProp es una instancia de Arbitrary. Por ejemplo,
 --   
 --   <pre>
 --   &gt; sample (arbitrary :: Gen FProp)
 --   T
---   (no p / (F / F))
+--   (no p ∨ (F ∧ F))
 --   no r
---   ((q --&gt; (T / s)) --&gt; F)
---   ((((T --&gt; p) / s) --&gt; no (q --&gt; q)) --&gt; s)
---   ((no (r / r) --&gt; no (p --&gt; s)) <i> ((p <a>--</a> T) </i> no (s <a>--</a> F)))
---   (F --&gt; s)
+--   ((q → (T ∧ s)) → F)
+--   ((((T → p) ∧ s) → no (q → q)) → s)
+--   ((no (r ∨ r) → no (p → s)) ∧ ((p ↔ T) ∧ no (s ↔ F)))
+--   (F → s)
 --   no no p
 --   </pre>
 
@@ -86,10 +86,10 @@ type Interpretacion = [FProp]
 --   interprestación i. Por ejemplo,
 --   
 --   <pre>
---   &gt;&gt;&gt; significado ((p \/ q) /\ ((no q) \/ r)) [r]
+--   &gt;&gt;&gt; significado ((p ∨ q) ∧ ((no q) ∨ r)) [r]
 --   False
 --   
---   &gt;&gt;&gt; significado ((p \/ q) /\ ((no q) \/ r)) [p,r]
+--   &gt;&gt;&gt; significado ((p ∨ q) ∧ ((no q) ∨ r)) [p,r]
 --   True
 --   </pre>
 significado :: FProp -> Interpretacion -> Bool
@@ -106,7 +106,7 @@ subconjuntos :: [a] -> [[a]]
 --   proposicionales que aparecen en f. Por ejemplo,
 --   
 --   <pre>
---   &gt;&gt;&gt; simbolosPropForm (p /\ q --&gt; p)
+--   &gt;&gt;&gt; simbolosPropForm (p ∧ q → p)
 --   [p,q]
 --   </pre>
 simbolosPropForm :: FProp -> [FProp]

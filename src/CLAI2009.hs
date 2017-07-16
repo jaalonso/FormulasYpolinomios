@@ -55,14 +55,14 @@ data FProp = T
 
 -- | Declaración del procedimiento de escritura de fórmulas.
 instance Show FProp where
-    show (T)        = "T"
-    show (F)        = "F"
+    show (T)        = "⊤"
+    show (F)        = "⊥"
     show (Atom p)   = p
-    show (Neg p)    = "no " ++ show p
-    show (Conj p q) = "(" ++ show p ++ " /\\ " ++ show q ++ ")"
-    show (Disj p q) = "(" ++ show p ++ " \\/ " ++ show q ++ ")"
-    show (Impl p q) = "(" ++ show p ++ " --> " ++ show q ++ ")"
-    show (Equi p q) = "(" ++ show p ++ " <--> " ++ show q ++ ")"
+    show (Neg p)    = "¬" ++ show p
+    show (Conj p q) = "(" ++ show p ++ " ∧ " ++ show q ++ ")"
+    show (Disj p q) = "(" ++ show p ++ " ∨ " ++ show q ++ ")"
+    show (Impl p q) = "(" ++ show p ++ " → " ++ show q ++ ")"
+    show (Equi p q) = "(" ++ show p ++ " ↔ " ++ show q ++ ")"
 
 -- *** Ejemplos de fórmulas atomicas
 
@@ -78,25 +78,25 @@ r  = Atom "r"
 no :: FProp -> FProp
 no = Neg
 
--- | @f \/ g@ es la disyunción de f y g
-(\/) :: FProp -> FProp -> FProp
-(\/)   = Disj
-infixr 5 \/
+-- | @f ∨ g@ es la disyunción de f y g
+(∨) :: FProp -> FProp -> FProp
+(∨)   = Disj
+infixr 5 ∨
 
--- | f /\ g es la conjunción de f y g
-(/\) :: FProp -> FProp -> FProp
-(/\)   = Conj
-infixr 4 /\
+-- | f ∧ g es la conjunción de f y g
+(∧) :: FProp -> FProp -> FProp
+(∧)   = Conj
+infixr 4 ∧
 
--- | f --> g es la implicación de f a g
-(-->) :: FProp -> FProp -> FProp
-(-->)  = Impl
-infixr 3 -->
+-- | f → g es la implicación de f a g
+(→) :: FProp -> FProp -> FProp
+(→)  = Impl
+infixr 3 →
 
--- | f <--> g es la equivalencia entre f y g
-(<-->) :: FProp -> FProp -> FProp
-(<-->) = Equi
-infixr 2 <-->
+-- | f ↔ g es la equivalencia entre f y g
+(↔) :: FProp -> FProp -> FProp
+(↔) = Equi
+infixr 2 ↔
 
 -- ---------------------------------------------------------------------
 -- Generadores de fórmulas proposicionales 
@@ -107,12 +107,12 @@ infixr 2 <-->
 -- @
 --    > sample (arbitrary :: Gen FProp)
 --    T
---    (no p \/ (F /\ F))
+--    (no p ∨ (F ∧ F))
 --    no r
---    ((q --> (T /\ s)) --> F)
---    ((((T --> p) /\ s) --> no (q --> q)) --> s)
---    ((no (r \/ r) --> no (p --> s)) /\ ((p <--> T) /\ no (s <--> F)))
---    (F --> s)
+--    ((q → (T ∧ s)) → F)
+--    ((((T → p) ∧ s) → no (q → q)) → s)
+--    ((no (r ∨ r) → no (p → s)) ∧ ((p ↔ T) ∧ no (s ↔ F)))
+--    (F → s)
 --    no no p
 -- @
 instance Arbitrary FProp where
@@ -142,9 +142,9 @@ type Interpretacion = [FProp]
 -- | (significado f i) es el significado de la fórmula f en la
 -- interprestación i. Por ejemplo, 
 -- 
--- >>> significado ((p \/ q) /\ ((no q) \/ r)) [r]
+-- >>> significado ((p ∨ q) ∧ ((no q) ∨ r)) [r]
 -- False
--- >>> significado ((p \/ q) /\ ((no q) \/ r)) [p,r]
+-- >>> significado ((p ∨ q) ∧ ((no q) ∨ r)) [p,r]
 -- True
 significado :: FProp -> Interpretacion -> Bool
 significado T          _ = True
@@ -172,7 +172,7 @@ subconjuntos (x:xs) = [x:ys | ys <- xss] ++ xss
 -- | (simbolosPropForm f) es el conjunto formado por todos los símbolos
 -- proposicionales que aparecen en f. Por ejemplo, 
 -- 
--- >>> simbolosPropForm (p /\ q --> p)
+-- >>> simbolosPropForm (p ∧ q → p)
 -- [p,q]
 simbolosPropForm :: FProp -> [FProp]
 simbolosPropForm T          = []
@@ -186,20 +186,20 @@ simbolosPropForm (Equi f g) = simbolosPropForm f `union` simbolosPropForm g
 
 -- (interpretacionesForm f) es la lista de todas las interpretaciones de
 -- la fórmula f. Por ejemplo,  
---    interpretacionesForm (p /\ q --> p)  ==>  [[p,q],[p],[q],[]]
+--    interpretacionesForm (p ∧ q → p)  ==>  [[p,q],[p],[q],[]]
 interpretacionesForm :: FProp -> [Interpretacion]
 interpretacionesForm f = subconjuntos (simbolosPropForm f)
 
 -- (esModeloFormula i f) se verifica si la interpretación i es un modelo
 -- de la fórmula f. Por ejemplo, 
---    esModeloFormula [r]   ((p \/ q) /\ ((no q) \/ r))    ==>  False
---    esModeloFormula [p,r] ((p \/ q) /\ ((no q) \/ r))    ==>  True
+--    esModeloFormula [r]   ((p ∨ q) ∧ ((no q) ∨ r))    ==>  False
+--    esModeloFormula [p,r] ((p ∨ q) ∧ ((no q) ∨ r))    ==>  True
 esModeloFormula :: Interpretacion -> FProp -> Bool
 esModeloFormula i f = significado f i
 
 -- (modelosFormula f) es la lista de todas las interpretaciones de la
 -- fórmula f que son modelo de F. Por ejemplo, 
---    modelosFormula ((p \/ q) /\ ((no q) \/ r)) 
+--    modelosFormula ((p ∨ q) ∧ ((no q) ∨ r)) 
 --    ==> [[p,q,r],[p,r],[p],[q,r]]
 modelosFormula :: FProp -> [Interpretacion]
 modelosFormula f =
@@ -211,9 +211,9 @@ modelosFormula f =
 -- ---------------------------------------------------------------------
 
 -- (esValida f) se verifica si la fórmula f es válida. Por ejemplo,
---    esValida (p --> p)                 ==>  True
---    esValida (p --> q)                 ==>  False
---    esValida ((p --> q) \/ (q --> p))  ==>  True
+--    esValida (p → p)                 ==>  True
+--    esValida (p → q)                 ==>  False
+--    esValida ((p → q) ∨ (q → p))  ==>  True
 esValida :: FProp -> Bool
 esValida f = 
     modelosFormula f == interpretacionesForm f
@@ -223,15 +223,15 @@ prop_esValida f =
 
 -- (esInsatisfacible f) se verifica si la fórmula f es insatisfacible. 
 -- Por ejemplo, 
---    esInsatisfacible (p /\ (no p))             ==>  True
---    esInsatisfacible ((p --> q) /\ (q --> r))  ==>  False
+--    esInsatisfacible (p ∧ (no p))             ==>  True
+--    esInsatisfacible ((p → q) ∧ (q → r))  ==>  False
 esInsatisfacible :: FProp -> Bool
 esInsatisfacible f =
     modelosFormula f == []
 
 -- (esSatisfacible f) se verifica si f es satisfacible. Por ejemplo, 
---    esSatisfacible (p /\ (no p))             ==>  False
---    esSatisfacible ((p --> q) /\ (q --> r))  ==>  True
+--    esSatisfacible (p ∧ (no p))             ==>  False
+--    esSatisfacible ((p → q) ∧ (q → r))  ==>  True
 esSatisfacible :: FProp -> Bool
 esSatisfacible f =
     modelosFormula f /= []
@@ -251,14 +251,14 @@ unionGeneral (x:xs) = x `union` unionGeneral xs
 
 -- (simbolosPropConj s) es el conjunto de los símbolos proposiciones de 
 -- s. Por ejemplo,
---    simbolosPropConj [p /\ q --> r, p --> s]  ==>  [p,q,r,s]
+--    simbolosPropConj [p ∧ q → r, p → s]  ==>  [p,q,r,s]
 simbolosPropConj :: [FProp] -> [FProp]
 simbolosPropConj s
     = unionGeneral [simbolosPropForm f | f <- s]
 
 -- (interpretacionesConjunto s) es la lista de las interpretaciones de 
 -- s. Por ejemplo,
---    interpretacionesConjunto [p --> q, q --> r]
+--    interpretacionesConjunto [p → q, q → r]
 --    ==> [[p,q,r],[p,q],[p,r],[p],[q,r],[q],[r],[]]
 interpretacionesConjunto :: [FProp] -> [Interpretacion]
 interpretacionesConjunto s =
@@ -269,9 +269,9 @@ interpretacionesConjunto s =
 -- ---------------------------------------------------------------------
 
 -- (esModeloConjunto i s) se verifica si i es modelo de s. Por ejemplo, 
---    esModeloConjunto [p,r] [(p \/ q) /\ ((no q) \/ r), q --> r]
+--    esModeloConjunto [p,r] [(p ∨ q) ∧ ((no q) ∨ r), q → r]
 --    ==> True
---    esModeloConjunto [p,r] [(p \/ q) /\ ((no q) \/ r), r --> q]
+--    esModeloConjunto [p,r] [(p ∨ q) ∧ ((no q) ∨ r), r → q]
 --    ==> False
 esModeloConjunto :: Interpretacion -> [FProp] -> Bool
 esModeloConjunto i s =
@@ -279,9 +279,9 @@ esModeloConjunto i s =
 
 -- (modelosConjunto s) es la lista de modelos del conjunto s. 
 -- Por ejemplo,
---    modelosConjunto [(p \/ q) /\ ((no q) \/ r), q --> r]
+--    modelosConjunto [(p ∨ q) ∧ ((no q) ∨ r), q → r]
 --    ==> [[p,q,r],[p,r],[p],[q,r]]
---    modelosConjunto [(p \/ q) /\ ((no q) \/ r), r --> q]
+--    modelosConjunto [(p ∨ q) ∧ ((no q) ∨ r), r → q]
 --    ==> [[p,q,r],[p],[q,r]]
 modelosConjunto :: [FProp] -> [Interpretacion]
 modelosConjunto s =
@@ -293,18 +293,18 @@ modelosConjunto s =
 -- ---------------------------------------------------------------------
 
 -- (esConsistente s) se verifica si s es consistente. Por ejemplo, 
---    esConsistente [(p \/ q) /\ ((no q) \/ r), p --> r]        
+--    esConsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r]        
 --    ==> True
---    esConsistente [(p \/ q) /\ ((no q) \/ r), p --> r, no r]  
+--    esConsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r, no r]  
 --    ==> False
 esConsistente :: [FProp] -> Bool
 esConsistente s =
     modelosConjunto s /= []
 
 -- (esInconsistente s) se verifica si s es inconsistente. Por ejemplo, 
---    esInconsistente [(p \/ q) /\ ((no q) \/ r), p --> r]        
+--    esInconsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r]        
 --    ==> False
---    esInconsistente [(p \/ q) /\ ((no q) \/ r), p --> r, no r]  
+--    esInconsistente [(p ∨ q) ∧ ((no q) ∨ r), p → r, no r]  
 --    ==> True
 esInconsistente :: [FProp] -> Bool
 esInconsistente s =
@@ -316,8 +316,8 @@ esInconsistente s =
 
 -- (esConsecuencia s f) se verifica si f es consecuencia de s. Por 
 -- ejemplo,
---    esConsecuencia [p --> q, q --> r] (p --> r)  ==>  True
---    esConsecuencia [p] (p /\ q)                  ==>  False
+--    esConsecuencia [p → q, q → r] (p → r)  ==>  True
+--    esConsecuencia [p] (p ∧ q)                  ==>  False
 esConsecuencia :: [FProp] -> FProp -> Bool
 esConsecuencia s f =
     null [i | i <- interpretacionesConjunto (f:s),
@@ -333,7 +333,7 @@ prop_esConsecuencia s f =
 
 -- (equivalentes f g) se verifica si las fórmulas f y g son equivalentes
 equivalentes :: FProp -> FProp -> Bool
-equivalentes f g = esValida (f <--> g)
+equivalentes f g = esValida (f ↔ g)
 
 -- =====================================================================
 -- * Polinomios
@@ -635,20 +635,20 @@ pro_tr_bien_definida f = esPolinomio (tr f)
 -- (theta2 m) es la fórmula correspondiente al polinomio p según las
 -- siguientes reglas:
 --    theta 0     = F
---    theta (a+b) = no ((theta a) <--> (theta b))
+--    theta (a+b) = no ((theta a) ↔ (theta b))
 theta :: Polinomio -> FProp
 theta (P ms) = thetaAux ms
 
 thetaAux :: [Monomio] -> FProp
 thetaAux []     = F
 thetaAux [m]    = theta2 m
-thetaAux (m:ms) = no ((theta2 m) <--> (theta (P ms)))
+thetaAux (m:ms) = no ((theta2 m) ↔ (theta (P ms)))
 
 -- (theta2 m) es la fórmula correspondiente al monomio m según las
 -- siguientes reglas:
 --    theta2 1     = T
 --    theta2 (x_i) = p_i
---    theta2 (a*b) = (theta2 a) /\ (theta2 b)
+--    theta2 (a*b) = (theta2 a) ∧ (theta2 b)
 theta2 :: Monomio -> FProp
 theta2 (M vs) = theta2Aux vs
 
@@ -669,13 +669,13 @@ prop_tr_theta p = tr (theta p) == p
 
 -- (derivP f v) es la derivada de la fórmula proposicional f respecto de
 -- la variable v. Por ejemplo,
---    *Polinomios> derivP (p /\ q --> r) "p"
---    no (q <--> (q /\ r))
---    *Polinomios> derivP (p /\ q --> r) "q"
---    no (p <--> (p /\ r))
---    *Polinomios> derivP (p /\ q --> r) "r"
---    (p /\ q)
---    *Polinomios> derivP (p /\ q --> p \/ q) "p"
+--    *Polinomios> derivP (p ∧ q → r) "p"
+--    no (q ↔ (q ∧ r))
+--    *Polinomios> derivP (p ∧ q → r) "q"
+--    no (p ↔ (p ∧ r))
+--    *Polinomios> derivP (p ∧ q → r) "r"
+--    (p ∧ q)
+--    *Polinomios> derivP (p ∧ q → p ∨ q) "p"
 --    F
 derivP :: FProp -> SimboloProposicional -> FProp
 derivP f v = theta (deriv (tr f) v)
@@ -698,7 +698,7 @@ sustituir (Equi f1 f2) v g = Equi (sustituir f1 v g) (sustituir f2 v g)
 prop_derivP_sustituir :: FProp -> Bool
 prop_derivP_sustituir f = 
     and [equivalentes (derivP f x) 
-                      (no (sustituir f x (no (Atom x))) <--> f) |
+                      (no (sustituir f x (no (Atom x))) ↔ f) |
          x <- variablesProp f]
 
 variablesProp f = [v | (Atom v) <- simbolosPropForm f]
@@ -749,7 +749,7 @@ deltaP f1 f2 v = theta (delta (tr f1) (tr f2) v)
 prop_adecuacion_deltaP :: FProp -> FProp -> Bool
 prop_adecuacion_deltaP f1 f2 = 
     and [esConsecuencia [f1, f2] (deltaP f1 f2 x) |
-         x <- variablesProp (f1 /\ f2)]
+         x <- variablesProp (f1 ∧ f2)]
 
 -- (pares xs) es la lista de los pares de elementos xs xon el primero
 -- menor o igual que el segundo. Por ejemplo,
@@ -795,7 +795,7 @@ prop_adecuacion_completitud_deltaP fs =
 
 -- (deltaDemostrable fs g) se verifica si g es demostrable a partir de
 -- fs usando la regla delta. Por ejemplo,
---    *Polinomios> deltaDemostrable [p --> q, q --> r] (p --> r)
+--    *Polinomios> deltaDemostrable [p → q, q → r] (p → r)
 --    True
 deltaDemostrable :: [FProp] -> FProp -> Bool
 deltaDemostrable fs g = deltaRefutableP ((no g):fs)
@@ -868,40 +868,40 @@ prop_adecuacion_completitud_deltaPSop fs =
 
 palomar :: [FProp]
 palomar = [-- La paloma 1 está en alguna hueco:
-           p1h1 \/ (p1h2 \/ p1h3),
+           p1h1 ∨ (p1h2 ∨ p1h3),
                   
            -- La paloma 2 está en alguna hueco:
-           p2h1 \/ (p2h2 \/ p2h3),
+           p2h1 ∨ (p2h2 ∨ p2h3),
            
            -- La paloma 3 está en alguna hueco:
-           p3h1 \/ (p3h2 \/ p3h3),
+           p3h1 ∨ (p3h2 ∨ p3h3),
            
            -- La paloma 4 está en alguna hueco:
-           p4h1 \/ (p4h2 \/ p4h3),
+           p4h1 ∨ (p4h2 ∨ p4h3),
 
            -- No hay dos palomas en la hueco 5:
-           (no p1h1) \/ (no p2h1),
-           (no p1h1) \/ (no p3h1),
-           (no p1h1) \/ (no p4h1),
-           (no p2h1) \/ (no p3h1),
-           (no p2h1) \/ (no p4h1),
-           (no p3h1) \/ (no p4h1),
+           (no p1h1) ∨ (no p2h1),
+           (no p1h1) ∨ (no p3h1),
+           (no p1h1) ∨ (no p4h1),
+           (no p2h1) ∨ (no p3h1),
+           (no p2h1) ∨ (no p4h1),
+           (no p3h1) ∨ (no p4h1),
            
            -- No hay dos palomas en la hueco 6:
-           (no p1h2) \/ (no p2h2),
-           (no p1h2) \/ (no p3h2),
-           (no p1h2) \/ (no p4h2),
-           (no p2h2) \/ (no p3h2),
-           (no p2h2) \/ (no p4h2),
-           (no p3h2) \/ (no p4h2),
+           (no p1h2) ∨ (no p2h2),
+           (no p1h2) ∨ (no p3h2),
+           (no p1h2) ∨ (no p4h2),
+           (no p2h2) ∨ (no p3h2),
+           (no p2h2) ∨ (no p4h2),
+           (no p3h2) ∨ (no p4h2),
            
            -- No hay dos palomas en la hueco 7:
-           (no p1h3) \/ (no p2h3),
-           (no p1h3) \/ (no p3h3),
-           (no p1h3) \/ (no p4h3),
-           (no p2h3) \/ (no p3h3),
-           (no p2h3) \/ (no p4h3),
-           (no p3h3) \/ (no p4h3)]
+           (no p1h3) ∨ (no p2h3),
+           (no p1h3) ∨ (no p3h3),
+           (no p1h3) ∨ (no p4h3),
+           (no p2h3) ∨ (no p3h3),
+           (no p2h3) ∨ (no p4h3),
+           (no p3h3) ∨ (no p4h3)]
     where p1h1 = Atom "p1h1"
           p1h2 = Atom "p1h2"
           p1h3 = Atom "p1h3"

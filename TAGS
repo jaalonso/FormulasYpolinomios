@@ -1,5 +1,5 @@
 
-./src/CLAI2009.hs,7930
+./src/CLAI2009.hs,7932
 module CLAI2009 CLAI200917,18
 type SimboloProposicional SimboloProposicional37,38
 data FProp FProp45,46
@@ -20,11 +20,11 @@ q q71,72
 r r72,73
 no no77,78
 no no78,79
-(\/)\/81,82
-(\(82,83
-(/\)/\86,87
-(-->)-->91,92
-(<-->)<-->96,97
+(â¨)â¨81,82
+(â(82,83
+(â§)â§86,87
+(â)â91,92
+(â)â96,97
 type Interpretacion Interpretacion139,140
 significado significado148,149
 significado significado149,150

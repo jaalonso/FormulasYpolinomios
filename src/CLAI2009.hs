@@ -634,7 +634,7 @@ polinomios' = do xs <- listOf1 monomios
 
 -- | prop_PolinomiosGeneraPolinomios comprueba que el generador de
 -- polinomios genera polinomios. Por ejemplo,
-
+-- 
 -- >>> quickCheck prop_PolinomiosGeneraPolinomios
 -- +++ OK, passed 100 tests.
 prop_PolinomiosGeneraPolinomios :: Polinomio -> Bool

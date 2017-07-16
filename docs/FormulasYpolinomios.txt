@@ -530,6 +530,11 @@ polinomios' :: Gen Polinomio
 
 -- | prop_PolinomiosGeneraPolinomios comprueba que el generador de
 --   polinomios genera polinomios. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_PolinomiosGeneraPolinomios
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_PolinomiosGeneraPolinomios :: Polinomio -> Bool
 suma :: Polinomio -> Polinomio -> Polinomio
 sumaAux :: [Monomio] -> [Monomio] -> [Monomio]

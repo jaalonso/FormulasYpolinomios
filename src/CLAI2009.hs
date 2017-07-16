@@ -1113,6 +1113,7 @@ palomar = [-- La paloma 1 está en alguna hueco:
 -- * Bibliografía
 -- ---------------------------------------------------------------------
 
+-- |
 -- 1. "Zhegalkin polynomial" en Wikipedia.
 -- 2. "Conservative retractions of propositional logic theories by means of
 --    boolean derivatives. Theoretical foundations"

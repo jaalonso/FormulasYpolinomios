@@ -531,87 +531,128 @@ instance Arbitrary Monomio where
 -- ** Polinomios
 -- ---------------------------------------------------------------------
 
--- Los polinomios son sumas de monomios distintos y ordenados y se
+-- | Los polinomios son sumas de monomios distintos y ordenados y se
 -- representan por listas ordenadas de monomios distintos, 
 data Polinomio = P [Monomio]
-                 deriving (Eq, Ord)
+  deriving (Eq, Ord)
 
--- El polinomio correspondiente a la lista vacía es el 0 (elemento
--- neutro de la suma).
+-- | Los polinomios se escribe incercalando el + entre sus monomios. Por
+-- ejemplo,
+--
+-- >>> P [M ["xy","z","u"], M ["p","q"]] 
+-- xy*z*u+p*q
+-- >>> P [M ["xy","z","u"]] 
+-- xy*z*u
+-- >>> P [M []] 
+-- 1
+-- >>> P []
+-- 0
+instance Show Polinomio where
+  show (P [])     = "0"
+  show (P [m])    = show m
+  show (P (m:ms)) = concat [show m, "+", show (P ms)]
+
+-- | El polinomio correspondiente a la lista vacía es el 0 (elemento
+-- neutro de la suma). Por ejemplo,
+-- 
+-- >>> cero
+-- 0
 cero :: Polinomio
 cero = P []
 
--- El polinomio 1 es el polinomio cuyo único elemento es el monomio uno.
+-- | El polinomio 1 es el polinomio cuyo único elemento es el monomio
+-- uno. Por ejemplo,
+--
+-- >>> uno
+-- 1
 uno  :: Polinomio
 uno = P [mUno]
 
--- La condición de que los monomios sean distintos y ordenados no se
+-- | La condición de que los monomios sean distintos y ordenados no se
 -- recoge en la definición del tipo de dato. Por ello se define el
--- siguiente reconocedor de polinomios.
+-- siguiente reconocedor de polinomios. Por ejemplo,
+-- 
+-- >>> esPolinomio (P [M ["a","b","c"], M ["x","y"]])
+-- True
+-- >>> esPolinomio (P [M ["x","y"], M ["a","c","d"]])
+-- False
+-- >>> esPolinomio (P [M ["x","y"], M ["a","d","c"]])
+-- False
+-- >>> esPolinomio (P [M ["x","y"], M ["a","a","c"]])
+-- False
+-- >>> esPolinomio (P [M ["x","y"], M ["x","y"], M ["a","c","d"]])
+-- False
+-- >>> esPolinomio (P [M ["a","a","c"], M ["x","y"]])
+-- False
 esPolinomio :: Polinomio -> Bool
-esPolinomio (P ms) = ms == sort (nub ms)
+esPolinomio (P ms) =
+  all esMonomio ms && ms == sort (nub ms)
 
--- Los polinomios se escribe incercalando el + entre sus monomios. Por
--- ejemplo,
---    *Main> P [M ["xy","z","u"], M ["p","q"]] 
---    xy*z*u+p*q
-instance Show Polinomio where
-    show (P [])     = "0"
-    show (P [m])    = show m
-    show (P (m:ms)) = concat [show m, "+", show (P ms)]
-
--- (polinomiosN n) es un generador de polinomios con el número de monomios
+-- | (polinomiosN n) es un generador de polinomios con el número de monomios
 -- entre 0 y n. Por ejemplo,
---    *Main> sample (polinomiosN 3)
+--
+-- @
+--    > sample (polinomiosN 3)
 --    0
 --    pp*sa
 --    gn*nf*zg
---    *Main> sample (polinomiosN 10)
+--    > sample (polinomiosN 10)
 --    1+b*j+gw*w*zm+j*ox+l*q*qz+ly*p*r+m+q*zy
 --    iz
 --    1+d+dy+jd*l+lr+w
+-- @
 polinomiosN :: Int -> Gen Polinomio
 polinomiosN n = do k <- choose (0,n)
                    ms <- vectorOf k monomios
                    return (P (sort (nub ms)))
 
--- polinomios es un generador de polinomios con el número de monomios
+-- | polinomios es un generador de polinomios con el número de monomios
 -- entre 0 y 3. Por ejemplo,
---    *Main> sample monomios
+--
+-- @
+--    > sample monomios
 --    nd*q
 --    e
 --    1
+-- @
 polinomios :: Gen Polinomio
 polinomios = polinomiosN 3
 
--- polinomios' es un generador de polinomios con un número aleatorio de
--- monomios. Por ejemplo, 
---    *Main> sample polinomios'
+-- | polinomios' es un generador de polinomios con un número aleatorio de
+-- monomios. Por ejemplo,
+--
+-- @
+--    > sample polinomios'
 --    0
 --    1
 --    f*m*on*tr*ue*x
 --    ct*d*ds*gy*ps*s*y
+-- @
 polinomios' :: Gen Polinomio
 polinomios' = do xs <- listOf1 monomios
                  return (P (sort (nub xs)))
 
--- Comprobación que el generador de polinomios genera polinomios.
+-- | prop_PolinomiosGeneraPolinomios comprueba que el generador de
+-- polinomios genera polinomios. Por ejemplo,
+
+-- >>> quickCheck prop_PolinomiosGeneraPolinomios
+-- +++ OK, passed 100 tests.
 prop_PolinomiosGeneraPolinomios :: Polinomio -> Bool
 prop_PolinomiosGeneraPolinomios p = esPolinomio p
 
 -- Los polinomios son arbitrarios.
 instance Arbitrary Polinomio where
-    arbitrary = polinomios
+  arbitrary = polinomios
 
--- Nota. Para facilitar la escritura, se hace Polinomio una instancia de
+-- Para facilitar la escritura, se hace Polinomio una instancia de
 -- la clase Num. Las funciones suma y producto se definen a continuación.
 instance Num Polinomio where
-    (+) = suma 
-    (*) = producto
-    (-) = suma
-    abs = undefined
-    signum = undefined
-    fromInteger = undefined
+  (+) = suma 
+  (*) = producto
+  (-) = suma
+  abs = undefined
+  signum = undefined
+  fromInteger = undefined
 
 -- ---------------------------------------------------------------------
 -- ** Suma de polinomios

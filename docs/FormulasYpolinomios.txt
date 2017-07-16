@@ -424,14 +424,112 @@ monomios' :: Gen Monomio
 --   +++ OK, passed 100 tests.
 --   </pre>
 prop_MonomiosGeneraMonomios :: Monomio -> Bool
+
+-- | Los polinomios son sumas de monomios distintos y ordenados y se
+--   representan por listas ordenadas de monomios distintos,
 data Polinomio
 P :: [Monomio] -> Polinomio
+
+-- | Los polinomios se escribe incercalando el + entre sus monomios. Por
+--   ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; P [M ["xy","z","u"], M ["p","q"]]
+--   xy*z*u+p*q
+--   
+--   &gt;&gt;&gt; P [M ["xy","z","u"]]
+--   xy*z*u
+--   
+--   &gt;&gt;&gt; P [M []]
+--   1
+--   
+--   &gt;&gt;&gt; P []
+--   0
+--   </pre>
+
+-- | El polinomio correspondiente a la lista vacía es el 0 (elemento neutro
+--   de la suma). Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; cero
+--   0
+--   </pre>
 cero :: Polinomio
+
+-- | El polinomio 1 es el polinomio cuyo único elemento es el monomio uno.
+--   Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; uno
+--   1
+--   </pre>
 uno :: Polinomio
+
+-- | La condición de que los monomios sean distintos y ordenados no se
+--   recoge en la definición del tipo de dato. Por ello se define el
+--   siguiente reconocedor de polinomios. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; esPolinomio (P [M ["a","b","c"], M ["x","y"]])
+--   True
+--   
+--   &gt;&gt;&gt; esPolinomio (P [M ["x","y"], M ["a","c","d"]])
+--   False
+--   
+--   &gt;&gt;&gt; esPolinomio (P [M ["x","y"], M ["a","d","c"]])
+--   False
+--   
+--   &gt;&gt;&gt; esPolinomio (P [M ["x","y"], M ["a","a","c"]])
+--   False
+--   
+--   &gt;&gt;&gt; esPolinomio (P [M ["x","y"], M ["x","y"], M ["a","c","d"]])
+--   False
+--   
+--   &gt;&gt;&gt; esPolinomio (P [M ["a","a","c"], M ["x","y"]])
+--   False
+--   </pre>
 esPolinomio :: Polinomio -> Bool
+
+-- | (polinomiosN n) es un generador de polinomios con el número de
+--   monomios entre 0 y n. Por ejemplo,
+--   
+--   <pre>
+--   &gt; sample (polinomiosN 3)
+--   0
+--   pp*sa
+--   gn*nf*zg
+--   &gt; sample (polinomiosN 10)
+--   1+b*j+gw*w*zm+j*ox+l*q*qz+ly*p*r+m+q*zy
+--   iz
+--   1+d+dy+jd*l+lr+w
+--   </pre>
 polinomiosN :: Int -> Gen Polinomio
+
+-- | polinomios es un generador de polinomios con el número de monomios
+--   entre 0 y 3. Por ejemplo,
+--   
+--   <pre>
+--   &gt; sample monomios
+--   nd*q
+--   e
+--   1
+--   </pre>
 polinomios :: Gen Polinomio
+
+-- | polinomios' es un generador de polinomios con un número aleatorio de
+--   monomios. Por ejemplo,
+--   
+--   <pre>
+--   &gt; sample polinomios'
+--   0
+--   1
+--   f*m*on*tr*ue*x
+--   ct*d*ds*gy*ps*s*y
+--   </pre>
 polinomios' :: Gen Polinomio
+
+-- | prop_PolinomiosGeneraPolinomios comprueba que el generador de
+--   polinomios genera polinomios. Por ejemplo,
 prop_PolinomiosGeneraPolinomios :: Polinomio -> Bool
 suma :: Polinomio -> Polinomio -> Polinomio
 sumaAux :: [Monomio] -> [Monomio] -> [Monomio]

@@ -815,6 +815,10 @@ pro_tr_bien_definida :: FProp -> Bool
 pro_tr_bien_definida f = esPolinomio (tr f)
 
 -- ---------------------------------------------------------------------
+-- * Transformaciones entre polinomios y fórmulas
+-- ---------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------
 -- ** Transformación de polinomios en proposiciones
 -- ---------------------------------------------------------------------
 
@@ -848,6 +852,10 @@ prop_theta_tr p = equivalentes (theta (tr p)) p
 
 prop_tr_theta :: Polinomio -> Bool
 prop_tr_theta p = tr (theta p) == p
+
+-- ---------------------------------------------------------------------
+-- * La regla de la independencia
+-- ---------------------------------------------------------------------
 
 -- ---------------------------------------------------------------------
 -- ** Derivación de fórmulas proposicionales

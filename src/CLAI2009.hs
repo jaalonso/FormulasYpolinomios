@@ -1190,7 +1190,6 @@ prop_adecuacion_completitud_delta_3 :: FProp -> Bool
 prop_adecuacion_completitud_delta_3 f =
   esValida f == deltaTeorema f
 
-
 -- ---------------------------------------------------------------------
 -- * Bibliografía
 -- ---------------------------------------------------------------------
@@ -1198,15 +1197,14 @@ prop_adecuacion_completitud_delta_3 f =
 -- $doc
 -- 
 -- * Wikipedia: [Zhegalkin polynomial](http://bit.ly/2tYsY9A).
-
+-- * G.A. Aranda, J. Borrego y  M.M. Fernández (2009)
+--   [Conservative retractions of propositional logic theories by means
+--    of boolean derivatives. Theoretical foundations](http://bit.ly/2tYdN0d).
 
 {-|
 
 $bib
 * Wikipedia: <http://bit.ly/2tYsY9A Zhegalkin polynomial>
-* G.A. Aranda, J. Borrego y  M.M. Fernández (2009)
-  <http://bit.ly/2tYdN0d Conservative retractions of propositional logic
-  theories by means of boolean derivatives. Theoretical foundations.> 
 * M. Brickenstein y A. Dreyer:
   <http://bit.ly/2tuf4sA PolyBoRi: A Gröbner basis framework for Boolean
   polynomials.>

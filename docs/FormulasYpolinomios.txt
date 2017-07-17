@@ -834,6 +834,14 @@ variablesProp :: FProp -> [SimboloProposicional]
 --   +++ OK, passed 100 tests.
 --   </pre>
 prop_derivP_sustituir :: FProp -> Bool
+
+-- | (indep p x) es el polinomio formado por los monomios de que no
+--   contienen la variable x. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; indep (P[M["x","y"],M["y","u"],M ["z"]]) "x"
+--   y*u+z
+--   </pre>
 indep :: Polinomio -> Variable -> Polinomio
 
 -- | (delta a1 a2 v) es el polinomio obtenido aplicando la regla delta (o

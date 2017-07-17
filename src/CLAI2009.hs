@@ -975,7 +975,7 @@ prop_derivP_sustituir f =
 -- ** La regla de independencia (regla delta)
 -- ---------------------------------------------------------------------
 
--- (indep p x) es el polinomio formado por los monomios de que no
+-- | (indep p x) es el polinomio formado por los monomios de que no
 -- contienen la variable x. Por ejemplo,
 --
 -- >>> indep (P[M["x","y"],M["y","u"],M ["z"]]) "x"

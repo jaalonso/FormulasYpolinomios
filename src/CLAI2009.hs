@@ -1196,7 +1196,6 @@ prop_adecuacion_completitud_delta_3 f =
 
 {-|
 $bib
-
 * Wikipedia: <http://bit.ly/2tYsY9A Zhegalkin polynomial>
 * G.A. Aranda, J. Borrego y  M.M. Fernández (2009)
   <http://bit.ly/2tYdN0d Conservative retractions of propositional logic
@@ -1207,5 +1206,4 @@ $bib
 * M. Clegg, J. Edmonds y R. Impagliazzo (1996):
   <http://bit.ly/2tY7wl5 Using the Groebner basis algorithm to find
   proofs of unsatisfiability.> 
-$bib
 -}

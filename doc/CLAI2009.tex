@@ -1,0 +1,397 @@
+\documentclass{llncs}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{fancyvrb}
+\usepackage[dvips]{graphicx}
+\usepackage{amsfonts,amssymb,latexsym,fancyhdr}
+\usepackage{amsrefs}
+\usepackage{hyperref}
+
+\input definiciones
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\lif}{\to}
+\newcommand{\liff}{\leftrightarrow}
+
+\begin{document}
+
+\title{Sistema certificado de decisión proposicional basado en polinomios} 
+
+\author{***\inst{1} }
+
+\institute{
+Universidad de Sevilla.\\
+Dpto. Ciencias de la Computación e Inteligencia Artificial\\
+ETS Ingeniería Informática.
+Sevilla , Spain}
+
+\maketitle
+
+\begin{abstract}
+En [citar calculemus] hemos introducido un procedimiento de decisión
+proposicional basado en el uso de la derivación polinomial. En el presente
+trabajo presentamos una implementación en Haskell del procedimiento y su
+certificación mediante QuickCheck. 
+\end{abstract}
+
+\section{Introducción}
+Este trabajo puede considerarse como un trabajo de tránsito: es la
+implementación en Haskell y certificación con QuickCheck del procedimiento de
+decisión introducido en [calculemus] y su objetivo es la verificación formal
+de la implementación en Isabelle. Sólo presentamos los elementos más
+destacados, el código completo puede consultarse en 
+\href{http://www.cs.us.es/~jalonso/CLAI2009.hs}{\texttt{CLAI2009.hs}}
+
+\section{Lógica proposicional}
+Esta sección se describen la implementación en Haskell de los conceptos de la
+lógica proposicional necesarios para la certificación de nuestro procedimiento
+de decisión.
+
+\subsection{Gramática de la lógica proposicional}
+Los símbolos proposicionales se representarán mediante cadenas.
+\begin{code}
+type SimboloProposicional = String
+\end{code}
+
+Las fórmulas proposicionales se definen por recursión:
+\begin{itemize}
+\item $\top$ y $\bot$ son fórmulas
+\item Si $A$ es una fórmula, también lo es $\neg A$.
+\item Si $A$ y $B$ son fórmulas, entonces $(A \land B)$, $(A \lor B)$, 
+  $(A \lif B)$ y $(A \liff B)$ también lo son.
+\end{itemize}
+\begin{code}
+data FProp = Atom SimboloProposicional
+           | T
+           | F
+           | Neg FProp 
+           | Conj FProp FProp 
+           | Disj FProp FProp 
+           | Impl FProp FProp 
+           | Equi FProp FProp 
+           deriving (Eq,Ord)
+\end{code}
+
+Para facilitar la escritura de fórmulas definimos las fórmulas atómicas
+\verb|p|, \verb|q|, \verb|r| y \verb|s| así como las funciones para las
+conectivas \verb|no|, \verb|/\|, \verb|\/|, \verb|-->| y \verb|<-->|.
+Asímimo, se define el procedimiento \verb|show| para facilitar la lectura de
+fórmulas y el procedimiento \verb|arbitrary| para generar fórmulas
+aleatoriamente.
+
+\subsection{Semántica de la lógica proposicional}
+Las interpretaciones las representamos como listas de fórmulas, entendiendo
+que las fórmulas verdaderas son las que pertenecen a la lista.
+\begin{code}
+type Interpretacion = [FProp]
+\end{code}
+
+Por recursión, se define la función \verb|(significado f i)| que es el
+significado de la fórmula \verb|f| en la interprestación \verb|i|
+y a partir de ella las funciones para reconocer si una interpretación es
+modelo de una fórmula o de un conjunto de fórmulas.
+\begin{code}
+esModeloFormula :: Interpretacion -> FProp -> Bool
+esModeloFormula i f = significado f i 
+
+esModeloConjunto :: Interpretacion -> [FProp] -> Bool
+esModeloConjunto i s =
+    and [esModeloFormula i f | f <- s]
+\end{code}
+
+Por recursión se define la función \verb|(simbolosPropForm f)| que es el
+conjunto formado por todos los símbolos proposicionales que aparecen en la
+fórmula \verb|f|. A partir de ella, se definen las funciones para generar las
+interpretaciones y los modelos de una fórmula
+\begin{code}
+interpretacionesForm :: FProp -> [Interpretacion]
+interpretacionesForm f = subconjuntos (simbolosPropForm f)
+
+modelosFormula :: FProp -> [Interpretacion]
+modelosFormula f =
+    [i | i <- interpretacionesForm f, esModeloFormula i f]
+\end{code}
+
+Análogamente se generan los modelos de conjuntos de fórmulas
+\begin{code}
+modelosConjunto :: [FProp] -> [Interpretacion]
+modelosConjunto s =
+    [i | i <- interpretacionesConjunto s, esModeloConjunto i s]
+
+interpretacionesConjunto :: [FProp] -> [Interpretacion]
+interpretacionesConjunto s = subconjuntos (simbolosPropConj s)
+\end{code}
+donde \verb|(simbolosPropConj s)| es el conjunto de los símbolos proposiciones
+del conjunto de fórmulas \verb|s|. 
+
+Finalmente se definen las funciones para reconocer si un conjunto de fórmulas
+es inconsistente, si una fórmula es consecuencia de un conjunto de fórmulas,
+si una fórmula es válida y si dos fórmulas son equivalentes:
+\begin{code}
+esInconsistente :: [FProp] -> Bool
+esInconsistente s =
+    modelosConjunto s == []
+
+esConsecuencia :: [FProp] -> FProp -> Bool
+esConsecuencia s f = esInconsistente (Neg f:s)
+
+esValida :: FProp -> Bool
+esValida f = esConsecuencia [] f
+
+equivalentes :: FProp -> FProp -> Bool
+equivalentes f g = esValida (f <--> g)
+\end{code}
+
+\section{Polinomios de $\Z/\Z_2$}
+
+\subsection{Representación de polinomios}
+
+Las variables se representan por cadenas. Los monomios son productos de
+variables y los representamos por listas ordenadas de variables. Los
+polinomios son suma de monomios y los representamos por listas ordenadas de
+monomios.
+\begin{code}
+type Variable = String
+data Monomio = M [Variable] deriving (Eq, Ord)
+data Polinomio = P [Monomio] deriving (Eq, Ord)  
+\end{code}
+Los reconocedores de monomios y polinomios se definen por
+\begin{code}
+esMonomio :: Monomio -> Bool
+esMonomio (M vs) = vs == sort (nub vs)
+
+esPolinomio :: Polinomio -> Bool
+esPolinomio (P ms) = ms == sort (nub ms)  
+\end{code}
+
+El monomio correspondiente a la lista vacía es el monomio uno, el polinomio
+correspondiente a la lista vacía es el polinomio cero y el correspondiente a
+la lista cuyo único elemento es el monomio uno es el polinomio uno,
+\begin{code}
+mUno :: Monomio
+mUno = M []
+
+cero, uno  :: Polinomio
+cero = P []
+uno = P [mUno]
+\end{code}
+
+\subsection{Operaciones con polinomios}
+
+Las definiciones de suma de polinomios y producto de polinomios son
+\begin{code}
+suma :: Polinomio -> Polinomio -> Polinomio
+suma (P []) (P q) = (P q)
+suma (P p)  (P q) = P (sumaAux p q)
+   where sumaAux [] y      = y
+         sumaAux (c:r) y
+             | elem c y   = sumaAux r (delete c y)
+             | otherwise  = insert c (sumaAux r y)
+
+producto :: Polinomio -> Polinomio -> Polinomio
+producto (P []) _     = P []
+producto (P (m:ms)) q = suma (productoMP m q) (producto (P ms) q)
+
+productoMP :: Monomio -> Polinomio -> Polinomio
+productoMP m1 (P [])     = P []
+productoMP m1 (P (m:ms)) = 
+   suma (P [productoMM m1 m]) (productoMP m1 (P ms))
+
+productoMM :: Monomio -> Monomio -> Monomio
+productoMM (M x) (M y) = M (sort (x `union` y))
+\end{code}
+
+\subsection{Generación de polinomios y certificación con QuickCheck}
+Para generar aleatoriamente polinomios se definen generadores de caracteres
+de letras minúsculas, de variables con longitud 1 ó 2, de monomios con el
+número de variables entre 0 y 3 y de polinomios con el número de monomios
+entre 0 y 3. 
+\begin{code}
+caracteres :: Gen Char
+caracteres = chr `fmap` choose (97,122)
+
+variables :: Gen String
+variables = do k <- choose (1,2)
+               vectorOf k caracteres
+
+monomios :: Gen Monomio
+monomios = do k <- choose (0,3)
+              vs <- vectorOf k variables
+              return (M (sort (nub vs)))
+
+polinomios :: Gen Polinomio
+polinomios = do k <- choose (0,3)
+                ms <- vectorOf k monomios
+                return (P (sort (nub ms)))
+\end{code}
+Por ejemplo,
+\begin{sesion}
+*Main> sample polinomios
+0
+pp*sa
+gn*nf*zg
+\end{sesion}
+
+Declaramos los polinomios instancias de Arbitrary, para usar QuickCheck, y de
+Num para facilitar la escritura.
+\begin{code}
+instance Arbitrary Polinomio where
+    arbitrary = polinomios
+
+instance Num Polinomio where
+    (+) = suma 
+    (*) = producto
+    (-) = suma
+    abs = undefined
+    signum = undefined
+    fromInteger = undefined
+\end{code}
+
+La propiedades de las operaciones sobre polinomios se certifican con QuickCheck
+\begin{code}
+prop_polinomios :: Polinomio -> Polinomio -> Polinomio -> Bool
+prop_polinomios p q r =
+   esPolinomio (p+q)       &&
+   p+q == q+p              &&
+   p+(q+r) == (p+q)+r      &&  
+   p + cero == p           &&
+   p+p == cero             &&
+   esPolinomio (p*q)       &&
+   p*q == q*p              &&
+   p*(q*r) == (p*q)*r      &&  
+   p * uno == p            &&
+   p*p == p                &&
+   p*(q+r) == (p*q)+(p*r)
+\end{code}
+
+\section{Polinomios y fórmulas proposicionales}
+
+Los polinomios pueden transformarse en fórmulas y las fórmulas en polinomios
+de manera que las transformaciones sean reversibles.
+\begin{code}
+tr :: FProp -> Polinomio
+tr T          = uno
+tr F          = cero
+tr (Atom p)   = P [M [p]]
+tr (Neg p)    = uno + (tr p)
+tr (Conj a b) = (tr a) * (tr b)
+tr (Disj a b) = (tr a) + (tr b) + ((tr a) * (tr b))
+tr (Impl a b) = uno + ((tr a) + ((tr a) * (tr b)))
+tr (Equi a b) = uno + ((tr a) + (tr b))
+
+theta :: Polinomio -> FProp
+theta (P ms) = thetaAux ms
+   where thetaAux []     = F
+         thetaAux [m]    = theta2 m
+         thetaAux (m:ms) = no ((theta2 m) <--> (theta (P ms)))
+\end{code}
+
+Las propiedades de reversibilidad pueden comprobarse con QuickCheck
+\begin{code}
+prop_theta_tr :: FProp -> Bool
+prop_theta_tr p = equivalentes (theta (tr p)) p
+
+prop_tr_theta :: Polinomio -> Bool
+prop_tr_theta p = tr (theta p) == p
+\end{code}
+
+\section{Procedimiento de decisión proposicional basado en polinomios}
+
+\subsection{Derivación y regla delta}
+
+La derivada de un polinomio $p$ respecto de una variable $x$ es la lista de
+monomios $p$ que contienen $x$, eliminándola. La derivación se extiende a las
+fórmulas mediante las funciones de transformación
+\begin{code}
+deriv :: Polinomio -> Variable -> Polinomio
+deriv (P ms) x = P [M (delete x m) | (M m) <- ms, elem x m]
+
+derivP :: FProp -> Variable -> FProp
+derivP f v = theta (deriv (tr f) v)
+\end{code}
+
+La regla delta para polinomios y fórmula es
+\begin{code}
+deltap :: Polinomio -> Polinomio -> Variable -> Polinomio
+deltap a1 a2 v = uno + ((uno+a1*a2)*(uno+a1*c2+a2*c1+c1*c2))
+    where
+      c1 = deriv a1 v
+      c2 = deriv a2 v
+
+delta :: FProp -> FProp -> Variable -> FProp
+delta f1 f2 v = theta (deltap (tr f1) (tr f2) v)   
+\end{code}
+
+Con QuickCheck se comprueba que la regla delta es adecuada
+\begin{code}
+prop_adecuacion_delta :: FProp -> FProp -> Bool
+prop_adecuacion_delta f1 f2 = 
+    and [esConsecuencia [f1, f2] (delta f1 f2 x) |
+         x <- variablesProp (f1 /\ f2)
+
+variablesProp f = [v | (Atom v) <- simbolosPropForm f]
+\end{code}
+
+\subsection{Procedimiento de decisión}
+
+La función \verb|(derivadas fs x)| es la lista de las proposiciones distintas
+de $\top$ obtenidas aplicando la regla delta a dos fórmulas de \verb|fs|
+respecto de la variable 
+\verb|x|.
+\begin{code}
+derivadas :: [FProp] -> Variable -> [FProp]
+derivadas fs x = 
+   delete T (nub [delta f1 f2 x | (f1,f2) <- pares fs])
+
+pares :: [a] -> [(a,a)]
+pares []  = []
+pares [x] = [(x,x)]
+pares (x:xs) = [(x,y) | y <- (x:xs)] ++ (pares xs)
+\end{code}
+A partir de la anterior, se determina cuando un conjunto de fórmulas es
+refutable por la regla delta
+\begin{code}
+deltaRefutable :: [FProp] -> Bool
+deltaRefutable [] = False
+deltaRefutable fs =
+    (elem F fs) || 
+    (deltaRefutable (derivadas fs (eligeVariable fs)))
+    where eligeVariable fs = 
+             head (concat [variablesProp f | f <- fs])
+\end{code}
+
+Con QuickCheck se comprueba que el procedimiento de delta--refutación es
+adecuado y completo
+\begin{code}
+prop_adecuacion_completitud_delta :: [FProp] -> Bool
+prop_adecuacion_completitud_delta fs = 
+    esInconsistente fs == deltaRefutable fs
+\end{code}
+
+A partir del procedimiento de refutación se pueden definir los de
+demostrabilidad y validez
+\begin{code}
+deltaDemostrable :: [FProp] -> FProp -> Bool
+deltaDemostrable fs g = deltaRefutable ((no g):fs)
+
+prop_adecuacion_completitud_delta_demostrable :: [FProp] -> 
+                                                 FProp -> 
+                                                 Bool
+prop_adecuacion_completitud_delta_demostrable fs g =
+    esConsecuencia fs g == deltaDemostrable fs g
+
+deltaTeorema :: FProp -> Bool
+deltaTeorema f = deltaRefutable [no f]
+
+prop_adecuacion_completitud_delta_teorema :: FProp -> Bool
+prop_adecuacion_completitud_delta_teorema f =
+    esValida f == deltaTeorema f
+\end{code}
+
+\section{Conclusiones y trabajos futuros}
+
+Este trabajo puede considerarse como un trabajo de tránsito: es la
+implementación en Haskell y certificación con QuickCheck del procedimiento de
+decisión introducido en [calculemus] y su objetivo es la verificación formal
+de la implementación en Isabelle
+
+\end{document}

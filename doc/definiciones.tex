@@ -1,0 +1,83 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% § Código                                                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DefineVerbatimEnvironment{code}{Verbatim}
+{fontsize=\normalsize,
+ fontfamily=cmtt,
+ fontshape=n,
+ frame=single}
+
+\DefineVerbatimEnvironment{code*}{Verbatim}
+{fontsize=\normalsize,
+ fontfamily=cmtt,
+ frame=single}
+
+\DefineVerbatimEnvironment{sesion}{Verbatim}
+{commandchars=\\\{\},
+ codes={\catcode`$=3\catcode`$=3},
+ fontsize=\normalsize,
+ fontfamily=cmtt,
+ fontshape=n,
+ xleftmargin=2em % ,
+ % frame=leftline
+}
+
+
+\DefineVerbatimEnvironment{sesion*}{Verbatim}
+{%commandchars=\\\{\},
+ codes={\catcode`$=3\catcode`$=3},
+ fontsize=\normalsize,
+ fontshape=n,
+ fontfamily=cmtt,
+ xleftmargin=2em,
+ frame=leftline}
+
+\DefineVerbatimEnvironment{preludio}{Verbatim}
+{% commandchars=\\\{\},
+ codes={\catcode`$=3\catcode`$=3},
+ fontsize=\normalsize,
+ fontfamily=cmtt,
+ frame=single,
+ framesep=2mm,
+ label=\mbox{Prelude}}
+
+\DefineVerbatimEnvironment{erroneo}{Verbatim}
+{% commandchars=\\\{\},
+ codes={\catcode`$=3\catcode`$=3},
+ fontsize=\normalsize,
+ fontfamily=cmtt,
+ frame=single,
+ framesep=2mm,
+ label=\mbox{Código erróneo}}
+
+\DefineVerbatimEnvironment{codigo}{Verbatim}
+{% commandchars=\\\{\},
+ codes={\catcode`$=3\catcode`$=3},
+ fontsize=\normalsize,
+ fontfamily=cmtt,
+ frame=single}
+
+\DefineVerbatimEnvironment{nverbatim}{Verbatim}
+{commandchars=\\\{\},
+ codes={\catcode`$=3\catcode`$=3},
+ fontsize=\normalsize,
+ fontfamily=cmtt,
+ xleftmargin=2em}
+
+\DefineVerbatimEnvironment{nverbatim*}{Verbatim}
+{% commandchars=\\\{\},
+ codes={\catcode`$=3\catcode`$=3},
+ fontsize=\normalsize,
+ fontfamily=cmtt,
+ xleftmargin=2em}
+
+\newcommand{\valor}{$\leadsto$}
+
+\newcommand{\oculta}[1]{}
+
+ 
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

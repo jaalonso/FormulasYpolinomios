@@ -977,17 +977,32 @@ prop_derivP_sustituir f =
 
 -- (indep p x) es el polinomio formado por los monomios de que no
 -- contienen la variable x. Por ejemplo,
---    *Polinomios> indep (P[M["x","y"],M["y","u"],M ["z"]]) "x"
---    y*u+z
+--
+-- >>> indep (P[M["x","y"],M["y","u"],M ["z"]]) "x"
+-- y*u+z
 indep :: Polinomio -> Variable -> Polinomio
 indep (P ms) x = P [M m | (M m) <- ms, notElem x m]
 
+-- | (delta a1 a2 v) es el polinomio obtenido aplicando la regla delta
+-- (o de independencia) a los polinomios a1 y a2 respecto de la variable
+-- v; es decir, el polinomio 1 + (1+a1*a2)*(1+a1*c2+a2*c1+c1*c2) donde
+-- ci es la derivada de ai respecto de v (para i = 1, 2). Por ejemplo,
+--
+-- >>> delta (P[M["x","y"],M["y","z"]]) (P[M["u","x"],M["y","z"]]) "x"
+-- u*y+u*y*z+y*z
 delta :: Polinomio -> Polinomio -> Variable -> Polinomio
 delta a1 a2 v = uno + ((uno+a1*a2)*(uno+a1*c2+a2*c1+c1*c2))
-    where
-      c1 = deriv a1 v
-      c2 = deriv a2 v
+  where
+    c1 = deriv a1 v
+    c2 = deriv a2 v
 
+-- | (delta' a1 a2 v) es el polinomio 1 + (1+b1*b2)*(1+(b1+c1)*(b2+c2))
+-- donde ci es la derivada de ai respecto de v y bi es es el polinomio
+-- formado por los monomios de ai que no contienen la variable x  (para
+-- i = 1, 2). Por ejemplo, 
+--
+-- >>> delta' (P[M["x","y"],M["y","z"]]) (P[M["u","x"],M["y","z"]]) "x"
+-- u*y+u*y*z+y*z
 delta' :: Polinomio -> Polinomio -> Variable -> Polinomio
 delta' a1 a2 v = uno + (uno+b1*b2)*(uno+(b1+c1)*(b2+c2))
     where
@@ -996,17 +1011,38 @@ delta' a1 a2 v = uno + (uno+b1*b2)*(uno+(b1+c1)*(b2+c2))
       b1 = indep a1 v
       b2 = indep a2 v
 
+-- | Comprueba que las funciones delta y delta' son equivalentes.
+--
+-- >>> quickCheck prop_equiv_delta_delta'
+-- +++ OK, passed 100 tests.
 prop_equiv_delta_delta' :: Polinomio -> Polinomio -> Bool
 prop_equiv_delta_delta' a1 a2 =
-    and [delta a1 a2 v == delta' a1 a2 v | v <- variablesPol (a1+a2)]
+  and [delta a1 a2 v == delta' a1 a2 v | v <- variablesPol (a1+a2)]
 
+-- | (variablesMon m) es la lista de las variables del monomio m. Por
+-- ejemplo,
+-- 
+-- >>> variablesMon (M ["x","z"])
+-- ["x","z"]
 variablesMon :: Monomio -> [Variable]
 variablesMon (M vs) = vs
 
+-- | (variablesPol p) es la lista de las variables del polinomio p. Por
+-- ejemplo, 
+-- 
+-- >>> variablesPol (P[M["x","z"],M["y","z"]])
+-- ["x","z","y"]
 variablesPol :: Polinomio -> [Variable]
 variablesPol (P [])     = []
 variablesPol (P (m:ms)) = (variablesMon m) `union` (variablesPol (P ms))
 
+
+-- | (deltaP f1 f2 v) es la f§ormula obtenida aplicando la regla delta
+-- (o de independencia) a las fórmulas f1 y f2 respecto de la variable
+-- v. Por ejemplo,
+--
+-- >>> deltaP (r → p ∨ q) (q → p ∧ q) "q"
+-- ¬(⊤ ↔ ¬((p ∧ r) ↔ r))
 deltaP :: FProp -> FProp -> SimboloProposicional -> FProp
 deltaP f1 f2 v = theta (delta (tr f1) (tr f2) v) 
 

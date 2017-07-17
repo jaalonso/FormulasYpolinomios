@@ -835,11 +835,63 @@ variablesProp :: FProp -> [SimboloProposicional]
 --   </pre>
 prop_derivP_sustituir :: FProp -> Bool
 indep :: Polinomio -> Variable -> Polinomio
+
+-- | (delta a1 a2 v) es el polinomio obtenido aplicando la regla delta (o
+--   de independencia) a los polinomios a1 y a2 respecto de la variable v;
+--   es decir, el polinomio 1 + (1+a1*a2)*(1+a1*c2+a2*c1+c1*c2) donde ci es
+--   la derivada de ai respecto de v (para i = 1, 2). Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; delta (P[M["x","y"],M["y","z"]]) (P[M["u","x"],M["y","z"]]) "x"
+--   u*y+u*y*z+y*z
+--   </pre>
 delta :: Polinomio -> Polinomio -> Variable -> Polinomio
+
+-- | (delta' a1 a2 v) es el polinomio 1 + (1+b1*b2)*(1+(b1+c1)*(b2+c2))
+--   donde ci es la derivada de ai respecto de v y bi es es el polinomio
+--   formado por los monomios de ai que no contienen la variable x (para i
+--   = 1, 2). Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; delta' (P[M["x","y"],M["y","z"]]) (P[M["u","x"],M["y","z"]]) "x"
+--   u*y+u*y*z+y*z
+--   </pre>
 delta' :: Polinomio -> Polinomio -> Variable -> Polinomio
+
+-- | Comprueba que las funciones delta y delta' son equivalentes.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_equiv_delta_delta'
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_equiv_delta_delta' :: Polinomio -> Polinomio -> Bool
+
+-- | (variablesMon m) es la lista de las variables del monomio m. Por
+--   ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; variablesMon (M ["x","z"])
+--   ["x","z"]
+--   </pre>
 variablesMon :: Monomio -> [Variable]
+
+-- | (variablesPol p) es la lista de las variables del polinomio p. Por
+--   ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; variablesPol (P[M["x","z"],M["y","z"]])
+--   ["x","z","y"]
+--   </pre>
 variablesPol :: Polinomio -> [Variable]
+
+-- | (deltaP f1 f2 v) es la f§ormula obtenida aplicando la regla delta (o
+--   de independencia) a las fórmulas f1 y f2 respecto de la variable v.
+--   Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; deltaP (r → p ∨ q) (q → p ∧ q) "q"
+--   ¬(⊤ ↔ ¬((p ∧ r) ↔ r))
+--   </pre>
 deltaP :: FProp -> FProp -> SimboloProposicional -> FProp
 prop_adecuacion_deltaP :: FProp -> FProp -> Bool
 pares :: [a] -> [(a, a)]

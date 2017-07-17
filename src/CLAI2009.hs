@@ -1202,6 +1202,7 @@ prop_adecuacion_completitud_delta_3 f =
 -- ---------------------------------------------------------------------
 
 {-|
+
 $bib
 * Wikipedia: <http://bit.ly/2tYsY9A Zhegalkin polynomial>
 * G.A. Aranda, J. Borrego y  M.M. Fernández (2009)

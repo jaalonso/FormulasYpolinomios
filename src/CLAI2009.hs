@@ -1200,15 +1200,9 @@ prop_adecuacion_completitud_delta_3 f =
 -- * G.A. Aranda, J. Borrego y  M.M. Fernández (2009)
 --   [Conservative retractions of propositional logic theories by means
 --    of boolean derivatives. Theoretical foundations](http://bit.ly/2tYdN0d).
-
-{-|
-
-$bib
-* Wikipedia: <http://bit.ly/2tYsY9A Zhegalkin polynomial>
-* M. Brickenstein y A. Dreyer:
-  <http://bit.ly/2tuf4sA PolyBoRi: A Gröbner basis framework for Boolean
-  polynomials.>
-* M. Clegg, J. Edmonds y R. Impagliazzo (1996):
-  <http://bit.ly/2tY7wl5 Using the Groebner basis algorithm to find
-  proofs of unsatisfiability.> 
--}
+-- * M. Brickenstein y A. Dreyer:
+--   [PolyBoRi: A Gröbner basis framework for Boolean
+--    polynomials](http://bit.ly/2tuf4sA). 
+-- * M. Clegg, J. Edmonds y R. Impagliazzo (1996):
+--   [Using the Groebner basis algorithm to find proofs of
+--    unsatisfiability](http://bit.ly/2tY7wl5). 

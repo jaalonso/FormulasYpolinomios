@@ -1190,6 +1190,13 @@ prop_adecuacion_completitud_delta_3 :: FProp -> Bool
 prop_adecuacion_completitud_delta_3 f =
   esValida f == deltaTeorema f
 
+
+-- * A section heading
+--
+-- $doc
+-- Here is a large chunk of documentation which may be referred to by
+-- the name $doc.
+
 -- ---------------------------------------------------------------------
 -- * Bibliografía
 -- ---------------------------------------------------------------------

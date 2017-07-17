@@ -789,10 +789,51 @@ prop_theta_tr :: FProp -> Bool
 --   +++ OK, passed 100 tests.
 --   </pre>
 prop_tr_theta :: Polinomio -> Bool
+
+-- | (derivP f v) es la derivada de la fórmula proposicional f respecto de
+--   la variable v. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; derivP (p ∧ q → r) "p"
+--   ¬(q ↔ (q ∧ r))
+--   
+--   &gt;&gt;&gt; derivP (p ∧ q → r) "q"
+--   ¬(p ↔ (p ∧ r))
+--   
+--   &gt;&gt;&gt; derivP (p ∧ q → r) "r"
+--   (p ∧ q)
+--   
+--   &gt;&gt;&gt; derivP (p ∧ q → p ∨ q) "p"
+--   ⊥
+--   </pre>
 derivP :: FProp -> SimboloProposicional -> FProp
+
+-- | (sustituir f v g) es la fórmula obtenida sustituyendo en la fórmula f
+--   la variable v por la fórmula g. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; sustituir (p → q ∨ r) "q" (p ∧ q)
+--   (p → ((p ∧ q) ∨ r))
+--   </pre>
 sustituir :: FProp -> SimboloProposicional -> FProp -> FProp
-prop_derivP_sustituir :: FProp -> Bool
+
+-- | (variablesProp f) es la lista de las variables proposicionales de la
+--   fórmula f. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; variablesProp (p → q ∨ p)
+--   ["p","q"]
+--   </pre>
 variablesProp :: FProp -> [SimboloProposicional]
+
+-- | Comprueba que, para toda fórmula f y toda variable x de f, la derivada
+--   de f respecto de x es equivalente a la fórmula ¬(f[x/¬x] ↔ f)
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_derivP_sustituir
+--   +++ OK, passed 100 tests.
+--   </pre>
+prop_derivP_sustituir :: FProp -> Bool
 indep :: Polinomio -> Variable -> Polinomio
 delta :: Polinomio -> Polinomio -> Variable -> Polinomio
 delta' :: Polinomio -> Polinomio -> Variable -> Polinomio

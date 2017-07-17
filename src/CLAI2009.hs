@@ -921,41 +921,55 @@ prop_tr_theta p = tr (theta p) == p
 -- ** Derivación de fórmulas proposicionales
 -- ---------------------------------------------------------------------
 
--- (derivP f v) es la derivada de la fórmula proposicional f respecto de
--- la variable v. Por ejemplo,
---    *Polinomios> derivP (p ∧ q → r) "p"
---    no (q ↔ (q ∧ r))
---    *Polinomios> derivP (p ∧ q → r) "q"
---    no (p ↔ (p ∧ r))
---    *Polinomios> derivP (p ∧ q → r) "r"
---    (p ∧ q)
---    *Polinomios> derivP (p ∧ q → p ∨ q) "p"
---    F
+-- | (derivP f v) es la derivada de la fórmula proposicional f respecto
+-- de la variable v. Por ejemplo,
+--
+-- >>> derivP (p ∧ q → r) "p"
+-- ¬(q ↔ (q ∧ r))
+-- >>> derivP (p ∧ q → r) "q"
+-- ¬(p ↔ (p ∧ r))
+-- >>> derivP (p ∧ q → r) "r"
+-- (p ∧ q)
+-- >>> derivP (p ∧ q → p ∨ q) "p"
+-- ⊥
 derivP :: FProp -> SimboloProposicional -> FProp
 derivP f v = theta (deriv (tr f) v)
 
--- (sustituir f v g) es la fórmula obtenida sustituyendo en la fórmula f
--- la variable v por la fórmula g.
+-- | (sustituir f v g) es la fórmula obtenida sustituyendo en la fórmula f
+-- la variable v por la fórmula g. Por ejemplo,
+--
+-- >>> sustituir (p → q ∨ r) "q" (p ∧ q)
+-- (p → ((p ∧ q) ∨ r))
 sustituir :: FProp -> SimboloProposicional -> FProp -> FProp
 sustituir T  _ _           = T
 sustituir F  _ _           = F
 sustituir (Atom x) v g 
-    | x == v               = g
-    | otherwise            = (Atom x)
+  | x == v                 = g
+  | otherwise              = (Atom x)
 sustituir (Neg f) v g      = Neg (sustituir f v g)
 sustituir (Disj f1 f2) v g = Disj (sustituir f1 v g) (sustituir f2 v g)
 sustituir (Conj f1 f2) v g = Conj (sustituir f1 v g) (sustituir f2 v g)
 sustituir (Impl f1 f2) v g = Impl (sustituir f1 v g) (sustituir f2 v g)
 sustituir (Equi f1 f2) v g = Equi (sustituir f1 v g) (sustituir f2 v g)
 
--- Proposición 1 (p.6) del artículo de Calculemus.
+-- | (variablesProp f) es la lista de las variables proposicionales de
+-- la fórmula f. Por ejemplo,
+--
+-- >>> variablesProp (p → q ∨ p)
+-- ["p","q"]
+variablesProp :: FProp -> [SimboloProposicional]
+variablesProp f = [v | (Atom v) <- simbolosPropForm f]
+
+-- | Comprueba que, para toda fórmula f y toda variable x de f, la
+-- derivada de f respecto de x es equivalente a la fórmula ¬(f[x/¬x] ↔ f)
+--
+-- >>> quickCheck prop_derivP_sustituir
+-- +++ OK, passed 100 tests.
 prop_derivP_sustituir :: FProp -> Bool
 prop_derivP_sustituir f = 
-    and [equivalentes (derivP f x) 
-                      (no (sustituir f x (no (Atom x))) ↔ f) |
-         x <- variablesProp f]
-
-variablesProp f = [v | (Atom v) <- simbolosPropForm f]
+  and [equivalentes (derivP f x) 
+                    (no (sustituir f x (no (Atom x))) ↔ f)
+      | x <- variablesProp f]
 
 -- ---------------------------------------------------------------------
 -- ** La regla de independencia (regla delta)
@@ -1176,10 +1190,15 @@ palomar = [-- La paloma 1 está en alguna hueco:
 {-|
 $bib
 
-* <http://bit.ly/2tYsY9A Zhegalkin polynomial> en Wikipedia.
-* <http://bit.ly/2tYdN0d Conservative retractions of propositional logic theories by means of boolean derivatives. Theoretical foundations.>
-* <http://bit.ly/2tuf4sA PolyBoRi: A Gröbner basis framework for Boolean polynomials.>
-* M. Clegg, J. Edmonds y R. Impagliazzo (1996).
-  <http://bit.ly/2tY7wl5 Using the Groebner basis algorithm to find proofs of unsatisfiability.> 
+* Wikipedia: <http://bit.ly/2tYsY9A Zhegalkin polynomial>
+* G.A. Aranda, J. Borrego y  M.M. Fernández (2009)
+  <http://bit.ly/2tYdN0d Conservative retractions of propositional logic
+  theories by means of boolean derivatives. Theoretical foundations.> 
+* M. Brickenstein y A. Dreyer:
+  <http://bit.ly/2tuf4sA PolyBoRi: A Gröbner basis framework for Boolean
+  polynomials.>
+* M. Clegg, J. Edmonds y R. Impagliazzo (1996):
+  <http://bit.ly/2tY7wl5 Using the Groebner basis algorithm to find
+  proofs of unsatisfiability.> 
 $bib
 -}

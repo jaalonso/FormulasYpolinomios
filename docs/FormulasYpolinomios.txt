@@ -699,13 +699,88 @@ prop_deriv_suma :: Polinomio -> Polinomio -> Variable -> Bool
 --   +++ OK, passed 100 tests.
 --   </pre>
 prop_deriv_prod :: Polinomio -> Polinomio -> Variable -> Bool
+
+-- | (tr f) es el polinomio correspondiente a la fórmula f. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; tr (p ∧ (q ∨ r))
+--   p*q+p*q*r+p*r
+--   
+--   &gt;&gt;&gt; tr (p → p ∨ q)
+--   1
+--   
+--   &gt;&gt;&gt; tr ((p → q) ∨ (q → p))
+--   1
+--   
+--   &gt;&gt;&gt; tr ((p → q) ∨ (q → r))
+--   1
+--   
+--   &gt;&gt;&gt; tr ((p → q) ∨ (r → q))
+--   1+p*q*r+p*r
+--   </pre>
 tr :: FProp -> Polinomio
 pro_tr_bien_definida :: FProp -> Bool
+
+-- | (theta2 m) es la fórmula correspondiente al polinomio p según las
+--   siguientes reglas:
+--   
+--   <ul>
+--   <li>theta 0 = F</li>
+--   <li>theta (a+b) = no ((theta a) ↔ (theta b))</li>
+--   </ul>
+--   
+--   Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; theta (P [mUno])
+--   ⊤
+--   
+--   &gt;&gt;&gt; theta (P [mUno, M ["p"]])
+--   ¬(⊤ ↔ p)
+--   
+--   &gt;&gt;&gt; theta (P [mUno, M ["p"], M ["p","q"]])
+--   ¬(⊤ ↔ ¬(p ↔ (p ∧ q)))
+--   
+--   &gt;&gt;&gt; theta (P [mUno, M ["p"], M ["p","q"],M["p","q","r"]])
+--   ¬(⊤ ↔ ¬(p ↔ ¬((p ∧ q) ↔ (p ∧ (q ∧ r)))))
+--   
+--   &gt;&gt;&gt; theta (P [mUno, M ["p"], M ["p","q"],M["p","q","r"],M["r"]])
+--   ¬(⊤ ↔ ¬(p ↔ ¬((p ∧ q) ↔ ¬((p ∧ (q ∧ r)) ↔ r))))
+--   </pre>
 theta :: Polinomio -> FProp
-thetaAux :: [Monomio] -> FProp
+
+-- | (theta2 m) es la fórmula correspondiente al monomio m según las
+--   siguientes reglas:
+--   
+--   <ul>
+--   <li>theta2 1 = T</li>
+--   <li>theta2 (x_i) = p_i</li>
+--   <li>theta2 (a*b) = (theta2 a) ∧ (theta2 b)</li>
+--   </ul>
+--   
+--   Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; theta2 (M ["p","q","r"])
+--   (p ∧ (q ∧ r))
+--   </pre>
 theta2 :: Monomio -> FProp
-theta2Aux :: [SimboloProposicional] -> FProp
+
+-- | Comprueba que para cualquier fórmula f, (theta (tr f)) es equivalente
+--   a f.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_theta_tr
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_theta_tr :: FProp -> Bool
+
+-- | Comprueba que, para cualquier polinomio p, tr (theta p) es igual a p.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_tr_theta
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_tr_theta :: Polinomio -> Bool
 derivP :: FProp -> SimboloProposicional -> FProp
 sustituir :: FProp -> SimboloProposicional -> FProp -> FProp

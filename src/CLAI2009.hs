@@ -776,23 +776,40 @@ prop_distributiva p q r = p*(q+r) == (p*q)+(p*r)
 -- ** Derivada de polinomios
 -- ---------------------------------------------------------------------
 
--- (deriv p x) es la derivada del polinomio p respecto de la variable
+-- | (deriv p x) es la derivada del polinomio p respecto de la variable
 -- x; es decir, la lista de monomios de p que contienen la variable x,
 -- eliminándola. Por ejemplo,
---    *Main> deriv (P [M ["u"],M ["x"],M ["x","y"],M ["x","z"]]) "x"
---    1+y+z
+--
+-- >>> deriv (P [M ["u"],M ["x"],M ["x","y"],M ["x","z"]]) "x"
+-- 1+y+z
 deriv :: Polinomio -> Variable -> Polinomio
 deriv (P ms) x = P [M (delete x m) | (M m) <- ms, elem x m]
 
+-- | Comprueba que la derivada está bien definida.
+--
+-- >>> quickCheck prop_deriv_bien_definida
+-- +++ OK, passed 100 tests.
 prop_deriv_bien_definida :: Polinomio -> Variable -> Bool
 prop_deriv_bien_definida p x = esPolinomio (deriv p x)
 
+-- | Comprueba que la segunda derivada es nula.
+--
+-- >>> quickCheck prop_deriv_deriv
+-- +++ OK, passed 100 tests.
 prop_deriv_deriv :: Polinomio -> Variable -> Bool
 prop_deriv_deriv p x = deriv (deriv p x) x == cero
 
+-- | Comprueba que la derivada de la suma es la suma de las derivadas. 
+--
+-- >>> quickCheck prop_deriv_suma
+-- +++ OK, passed 100 tests.
 prop_deriv_suma :: Polinomio -> Polinomio -> Variable -> Bool
 prop_deriv_suma p q x = deriv (p+q) x == (deriv p x) + (deriv q x) 
 
+-- | Comprueba que la regla de la derivada del producto
+--
+-- >>> quickCheck prop_deriv_prod
+-- +++ OK, passed 100 tests.
 prop_deriv_prod :: Polinomio -> Polinomio -> Variable -> Bool
 prop_deriv_prod p q x = deriv (p*q) x == (deriv p x)*q + p*(deriv q x) 
 

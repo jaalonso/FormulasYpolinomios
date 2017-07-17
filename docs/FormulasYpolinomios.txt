@@ -657,10 +657,47 @@ prop_prod_conmutativa :: Polinomio -> Polinomio -> Bool
 --   +++ OK, passed 100 tests.
 --   </pre>
 prop_distributiva :: Polinomio -> Polinomio -> Polinomio -> Bool
+
+-- | (deriv p x) es la derivada del polinomio p respecto de la variable x;
+--   es decir, la lista de monomios de p que contienen la variable x,
+--   eliminándola. Por ejemplo,
+--   
+--   <pre>
+--   &gt;&gt;&gt; deriv (P [M ["u"],M ["x"],M ["x","y"],M ["x","z"]]) "x"
+--   1+y+z
+--   </pre>
 deriv :: Polinomio -> Variable -> Polinomio
+
+-- | Comprueba que la derivada está bien definida.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_deriv_bien_definida
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_deriv_bien_definida :: Polinomio -> Variable -> Bool
+
+-- | Comprueba que la segunda derivada es nula.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_deriv_deriv
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_deriv_deriv :: Polinomio -> Variable -> Bool
+
+-- | Comprueba que la derivada de la suma es la suma de las derivadas.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_deriv_suma
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_deriv_suma :: Polinomio -> Polinomio -> Variable -> Bool
+
+-- | Comprueba que la regla de la derivada del producto
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck prop_deriv_prod
+--   +++ OK, passed 100 tests.
+--   </pre>
 prop_deriv_prod :: Polinomio -> Polinomio -> Variable -> Bool
 tr :: FProp -> Polinomio
 pro_tr_bien_definida :: FProp -> Bool

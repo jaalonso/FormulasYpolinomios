@@ -843,6 +843,10 @@ tr (Disj a b) = tr a + tr b + tr a * tr b
 tr (Impl a b) = uno + tr a + tr a * tr b
 tr (Equi a b) = uno + tr a + tr b
 
+-- | Comprueba que, para toda fórmula f, (tr f) es un polinomio.
+--
+-- >>> quickCheck pro_tr_bien_definida
+-- +++ OK, passed 100 tests.
 pro_tr_bien_definida :: FProp -> Bool
 pro_tr_bien_definida f = esPolinomio (tr f)
 

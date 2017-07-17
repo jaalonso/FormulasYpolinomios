@@ -719,6 +719,13 @@ prop_deriv_prod :: Polinomio -> Polinomio -> Variable -> Bool
 --   1+p*q*r+p*r
 --   </pre>
 tr :: FProp -> Polinomio
+
+-- | Comprueba que, para toda fórmula f, (tr f) es un polinomio.
+--   
+--   <pre>
+--   &gt;&gt;&gt; quickCheck pro_tr_bien_definida
+--   +++ OK, passed 100 tests.
+--   </pre>
 pro_tr_bien_definida :: FProp -> Bool
 
 -- | (theta2 m) es la fórmula correspondiente al polinomio p según las

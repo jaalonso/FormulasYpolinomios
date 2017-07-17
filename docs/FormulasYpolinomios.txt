@@ -9,8 +9,8 @@
 @version 0.1.0.0
 
 
--- | Código correspondiente al artículo "Sistema certificado de decisión
---   proposicional basado en polinomios" presentado en el CLAI2009
+-- | Código correspondiente al artículo <a>Sistema certificado de decisión
+--   proposicional basado en polinomios</a> presentado en el CLAI2009
 --   (Workshop on Computational Logic and Artificial Intelligence).
 module CLAI2009
 

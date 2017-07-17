@@ -1,6 +1,9 @@
--- Logica.hs
--- Lógica proposicional
--- ---------------------------------------------------------------------
+-- Module      : Logica
+-- Description : Sintaxis y semántica de la lógica proposicional
+-- Copyright   : José A. Alonso
+-- License     : GPL-3
+-- Maintainer  : JoseA.Alonso@gmail.com
+-- Stability   : Provisional
 
 module Logica where
 
@@ -15,12 +18,8 @@ import Data.List     ( union
                      )
 import Test.QuickCheck
 
--- =====================================================================
--- * Lógica
--- =====================================================================
-
 -- ---------------------------------------------------------------------
--- ** Sintaxis de fórmulas proposicionales
+-- * Sintaxis de fórmulas proposicionales
 -- ---------------------------------------------------------------------
 
 -- | Los símbolos proposicionales se representan por cadenas.
@@ -53,7 +52,7 @@ instance Show FProp where
     show (Impl x y) = "(" ++ show x ++ " → " ++ show y ++ ")"
     show (Equi x y) = "(" ++ show x ++ " ↔ " ++ show y ++ ")"
 
--- *** Ejemplos de fórmulas atómicas
+-- ** Ejemplos de fórmulas atómicas
 
 -- | Ejemplo de fórmulas.
 p, q, r :: FProp
@@ -61,7 +60,7 @@ p  = Atom "p"
 q  = Atom "q"
 r  = Atom "r"
 
--- *** Conectivas lógicas
+-- ** Conectivas lógicas
 
 -- | (no f) es la negación de f 
 no :: FProp -> FProp
@@ -122,7 +121,7 @@ instance Arbitrary FProp where
           subform' = prop ( n `div` 4)
 
 -- ---------------------------------------------------------------------
--- ** Semántica de la lógica proposicional
+-- * Semántica de la lógica proposicional
 -- ---------------------------------------------------------------------
 
 -- | Las interpretaciones son listas de fórmulas atómicas. Las fórmulas
@@ -148,7 +147,7 @@ significado (Impl f g) i = significado (Disj (Neg f) g) i
 significado (Equi f g) i = significado (Conj (Impl f g) (Impl g f)) i
 
 -- ---------------------------------------------------------------------
--- ** Modelos de una fórmula
+-- * Modelos de una fórmula
 -- ---------------------------------------------------------------------
 
 -- | (simbolosPropForm f) es el conjunto formado por todos los símbolos
@@ -195,7 +194,7 @@ modelosFormula f =
      , esModeloFormula i f]
 
 -- ---------------------------------------------------------------------
--- ** Fórmulas válidas, satisfacibles e insatisfacibles
+-- * Fórmulas válidas, satisfacibles e insatisfacibles
 -- ---------------------------------------------------------------------
 
 -- | (esValida f) se verifica si la fórmula f es válida. Por ejemplo,
@@ -244,7 +243,7 @@ esSatisfacible f =
   modelosFormula f /= []
 
 -- ---------------------------------------------------------------------
--- ** Interpretaciones de un conjunto de fórmulas
+-- * Interpretaciones de un conjunto de fórmulas
 -- ---------------------------------------------------------------------
 
 -- | (unionGeneral x) es la unión de los conjuntos de la lista de
@@ -278,7 +277,7 @@ interpretacionesConjunto s =
   subsequences (simbolosPropConj s)
 
 -- ---------------------------------------------------------------------
--- ** Modelos de conjuntos de fórmulas
+-- * Modelos de conjuntos de fórmulas
 -- ---------------------------------------------------------------------
 
 -- | (esModeloConjunto i s) se verifica si i es modelo de s. Por
@@ -305,7 +304,7 @@ modelosConjunto s =
      , esModeloConjunto i s]
 
 -- ---------------------------------------------------------------------
--- ** Conjuntos consistentes e inconsistentes de fórmulas
+-- * Conjuntos consistentes e inconsistentes de fórmulas
 -- ---------------------------------------------------------------------
 
 -- | (esConsistente s) se verifica si s es consistente. Por ejemplo,
@@ -329,7 +328,7 @@ esInconsistente s =
   modelosConjunto s == []
 
 -- ---------------------------------------------------------------------
--- ** Consecuencia lógica
+-- * Consecuencia lógica
 -- ---------------------------------------------------------------------
 
 -- | (esConsecuencia s f) se verifica si f es consecuencia de s. Por 
@@ -357,7 +356,7 @@ prop_esConsecuencia s f =
    esConsecuencia s f == esInconsistente (Neg f:s)
 
 -- ---------------------------------------------------------------------
--- ** Equivalencia de fórmulas
+-- * Equivalencia de fórmulas
 -- ---------------------------------------------------------------------
 
 -- | (equivalentes f g) se verifica si las fórmulas f y g son

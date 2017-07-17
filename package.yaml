@@ -1,11 +1,29 @@
 name: FormulasYpolinomios
-synopsis: Sistema certificado de decisión proposicional basado en polinomios.
-description: Sistema certificado de decisión proposicional basado en polinomios.
 version: '0.1.0.0'
-category: Logic
+synopsis: Sistema certificado de decisión proposicional basado en polinomios.
+description: |
+  Sistema de decisión proposicional basado en la transformación de fórmulas a
+  polinomios y usando la regla de independencia. Las propiedades están
+  verificadas con QuickCheck.
+
+  El código se describe en el artículo [Sistema certificado de decisión
+  proposicional basado en polinomios](http://bit.ly/2u1inJt) presentado en
+  el CLAI2009 (Workshop on Computational Logic and Artificial
+  Intelligence).
+  
+  El orden de lectura de los módulos es el siguiente:
+
+  * [Logica](Logica.html): Lógica proposicional.
+  * [PolinomiosF2](PolinomiosF2.html): Polinomios en Z2/(x1^1-x1,...,xn^2-xn).
+  * [Transformaciones](Transformaciones.html): Transformaciones entre fórmulas
+    y polinomios. 
+  * [DeltaDeduccion](DeltaDeduccion.html): Deducción con la regla delta (o de
+    la independencia). 
+   
+category: Logic, Math
 author: José A. Alonso
 maintainer: JoseA.Alonso@gmail.com
-copyright: '2017'
+copyright: (c) José A. Alonso
 license: BSD3
 github: jaalonso/FormulasYpolinomios
 extra-source-files:
@@ -17,7 +35,10 @@ dependencies:
 library:
   source-dirs: src
   exposed-modules:
-  - CLAI2009
+  - Logica
+  - PolinomiosF2
+  - Transformaciones
+  - DeltaDeduccion
 tests:
   doctests:
     main: Doctest.hs

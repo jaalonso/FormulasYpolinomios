@@ -1196,6 +1196,8 @@ prop_adecuacion_completitud_delta_3 f =
 -- $doc
 -- Here is a large chunk of documentation which may be referred to by
 -- the name $doc.
+--
+-- * Wikipedia: [Zhegalkin polynomial](http://bit.ly/2tYsY9A).
 
 -- ---------------------------------------------------------------------
 -- * Bibliografía

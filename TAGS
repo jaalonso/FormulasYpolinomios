@@ -199,6 +199,206 @@ deltaTeorema deltaTeorema1181,1182
 prop_adecuacion_completitud_delta_3 prop_adecuacion_completitud_delta_31188,1189
 prop_adecuacion_completitud_delta_3 prop_adecuacion_completitud_delta_31189,1190
 
+./src/flycheck_CLAI2009.hs,7303
+module CLAI2009 CLAI200917,18
+type SimboloProposicional SimboloProposicional37,38
+data FProp FProp45,46
+data FProp = TT45,46
+           | FF46,47
+           | Atom Atom47,48
+           | Neg Neg48,49
+           | Conj Conj49,50
+           | Disj Disj50,51
+           | Impl Impl51,52
+           | Equi Equi52,53
+instance instance56,57
+p, q, r r69,70
+p, q,q69,70
+p,p69,70
+p p70,71
+q q71,72
+r r72,73
+no no77,78
+no no78,79
+(â¨)â¨81,82
+(â(82,83
+(â§)â§86,87
+(â)â91,92
+(â)â96,97
+type Interpretacion Interpretacion141,142
+significado significado150,151
+significado significado151,152
+simbolosPropForm simbolosPropForm169,170
+simbolosPropForm simbolosPropForm170,171
+interpretacionesForm interpretacionesForm184,185
+interpretacionesForm interpretacionesForm185,186
+esModeloFormula esModeloFormula194,195
+esModeloFormula esModeloFormula195,196
+modelosFormula modelosFormula202,203
+modelosFormula modelosFormula203,204
+esValida esValida219,220
+esValida esValida220,221
+prop_esValida prop_esValida231,232
+prop_esValida prop_esValida232,233
+esInsatisfacible esInsatisfacible242,243
+esInsatisfacible esInsatisfacible243,244
+esSatisfacible esSatisfacible252,253
+esSatisfacible esSatisfacible253,254
+unionGeneral unionGeneral269,270
+unionGeneral unionGeneral270,271
+simbolosPropConj simbolosPropConj277,278
+simbolosPropConj simbolosPropConj278,279
+interpretacionesConjunto interpretacionesConjunto286,287
+interpretacionesConjunto interpretacionesConjunto287,288
+esModeloConjunto esModeloConjunto301,302
+esModeloConjunto esModeloConjunto302,303
+modelosConjunto modelosConjunto312,313
+modelosConjunto modelosConjunto313,314
+esConsistente esConsistente327,328
+esConsistente esConsistente328,329
+esInconsistente esInconsistente337,338
+esInconsistente esInconsistente338,339
+esConsecuencia esConsecuencia352,353
+esConsecuencia esConsecuencia353,354
+prop_esConsecuencia prop_esConsecuencia365,366
+prop_esConsecuencia prop_esConsecuencia366,367
+equivalentes equivalentes378,379
+equivalentes equivalentes379,380
+caracteres caracteres398,399
+caracteres caracteres399,400
+type Variable Variable402,403
+variables variables413,414
+variables variables414,415
+variables' variables'426,427
+variables' variables'427,428
+data Monomio Monomio435,436
+data Monomio = M M435,436
+mUno mUno457,458
+mUno mUno458,459
+esMonomio esMonomio470,471
+esMonomio esMonomio471,472
+monomiosN monomiosN487,488
+monomiosN monomiosN488,489
+monomios monomios501,502
+monomios monomios502,503
+monomios' monomios'513,514
+monomios' monomios'514,515
+prop_MonomiosGeneraMonomios prop_MonomiosGeneraMonomios522,523
+prop_MonomiosGeneraMonomios prop_MonomiosGeneraMonomios523,524
+data Polinomio Polinomio535,536
+data Polinomio = P P535,536
+cero cero559,560
+cero cero560,561
+uno uno567,568
+uno uno568,569
+esPolinomio esPolinomio586,587
+esPolinomio esPolinomio587,588
+polinomiosN polinomiosN603,604
+polinomiosN polinomiosN604,605
+polinomios polinomios617,618
+polinomios polinomios618,619
+polinomios' polinomios'630,631
+polinomios' polinomios'631,632
+prop_PolinomiosGeneraPolinomios prop_PolinomiosGeneraPolinomios639,640
+prop_PolinomiosGeneraPolinomios prop_PolinomiosGeneraPolinomios640,641
+suma suma666,667
+suma suma667,668
+sumaAux sumaAux677,678
+sumaAux sumaAux678,679
+    | x `elem`elem680,681
+prop_suma_bien_definida prop_suma_bien_definida687,688
+prop_suma_bien_definida prop_suma_bien_definida688,689
+prop_suma_conmutativa prop_suma_conmutativa694,695
+prop_suma_conmutativa prop_suma_conmutativa695,696
+prop_suma_asociativa prop_suma_asociativa701,702
+prop_suma_asociativa prop_suma_asociativa702,703
+prop_suma_neutro prop_suma_neutro708,709
+prop_suma_neutro prop_suma_neutro709,710
+prop_suma_simetrico prop_suma_simetrico715,716
+prop_suma_simetrico prop_suma_simetrico716,717
+productoMM productoMM727,728
+productoMM productoMM728,729
+productoMP productoMP735,736
+productoMP productoMP736,737
+producto producto748,749
+producto producto749,750
+prop_prod_bien_definido prop_prod_bien_definido756,757
+prop_prod_bien_definido prop_prod_bien_definido757,758
+prop_prod_conmutativa prop_prod_conmutativa763,764
+prop_prod_conmutativa prop_prod_conmutativa764,765
+prop_distributiva prop_distributiva771,772
+prop_distributiva prop_distributiva772,773
+deriv deriv784,785
+deriv deriv785,786
+prop_deriv_bien_definida prop_deriv_bien_definida791,792
+prop_deriv_bien_definida prop_deriv_bien_definida792,793
+prop_deriv_deriv prop_deriv_deriv798,799
+prop_deriv_deriv prop_deriv_deriv799,800
+prop_deriv_suma prop_deriv_suma805,806
+prop_deriv_suma prop_deriv_suma806,807
+prop_deriv_prod prop_deriv_prod812,813
+prop_deriv_prod prop_deriv_prod813,814
+tr tr835,836
+tr tr836,837
+pro_tr_bien_definida pro_tr_bien_definida849,850
+pro_tr_bien_definida pro_tr_bien_definida850,851
+theta theta874,875
+theta theta875,876
+theta2 theta2892,893
+theta2 theta2893,894
+prop_theta_tr prop_theta_tr904,905
+prop_theta_tr prop_theta_tr905,906
+prop_tr_theta prop_tr_theta912,913
+prop_tr_theta prop_tr_theta913,914
+derivP derivP934,935
+derivP derivP935,936
+sustituir sustituir942,943
+sustituir sustituir943,944
+variablesProp variablesProp959,960
+variablesProp variablesProp960,961
+prop_derivP_sustituir prop_derivP_sustituir967,968
+prop_derivP_sustituir prop_derivP_sustituir968,969
+indep indep982,983
+indep indep983,984
+delta delta992,993
+delta delta993,994
+delta' delta'1005,1006
+delta' delta'1006,1007
+prop_equiv_delta_delta' prop_equiv_delta_delta'1017,1018
+prop_equiv_delta_delta' prop_equiv_delta_delta'1018,1019
+variablesMon variablesMon1026,1027
+variablesMon variablesMon1027,1028
+variablesPol variablesPol1034,1035
+variablesPol variablesPol1035,1036
+deltaP deltaP1045,1046
+deltaP deltaP1046,1047
+prop_adecuacion_deltaP prop_adecuacion_deltaP1058,1059
+prop_adecuacion_deltaP prop_adecuacion_deltaP1059,1060
+pares pares1068,1069
+pares pares1069,1070
+derivadas derivadas1079,1080
+derivadas derivadas1080,1081
+derivadasP derivadasP1091,1092
+derivadasP derivadasP1092,1093
+deltaRefutable deltaRefutable1102,1103
+deltaRefutable deltaRefutable1103,1104
+deltaRefutableP deltaRefutableP1115,1116
+deltaRefutableP deltaRefutableP1116,1117
+deltaRefutableP' deltaRefutableP'1125,1126
+deltaRefutableP' deltaRefutableP'1126,1127
+prop_def_alt_deltaRefutableP prop_def_alt_deltaRefutableP1136,1137
+prop_def_alt_deltaRefutableP prop_def_alt_deltaRefutableP1137,1138
+prop_adecuacion_completitud_deltaP prop_adecuacion_completitud_deltaP1146,1147
+prop_adecuacion_completitud_deltaP prop_adecuacion_completitud_deltaP1147,1148
+deltaDemostrable deltaDemostrable1157,1158
+deltaDemostrable deltaDemostrable1158,1159
+prop_adecuacion_completitud_delta_2 prop_adecuacion_completitud_delta_21167,1168
+prop_adecuacion_completitud_delta_2 prop_adecuacion_completitud_delta_21168,1169
+deltaTeorema deltaTeorema1180,1181
+deltaTeorema deltaTeorema1181,1182
+prop_adecuacion_completitud_delta_3 prop_adecuacion_completitud_delta_31188,1189
+prop_adecuacion_completitud_delta_3 prop_adecuacion_completitud_delta_31189,1190
+
 ./Setup.hs,15
 main main1,2
 

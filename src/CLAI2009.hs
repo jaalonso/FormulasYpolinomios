@@ -1050,75 +1050,145 @@ deltaP f1 f2 v = theta (delta (tr f1) (tr f2) v)
 -- ** Adecuación y completitud de la regla de independencia
 -- ---------------------------------------------------------------------
 
+-- | Comprueba que la regla delta es adecuada: es decir que, para toda
+-- fórmulas f1 y f2 y toda variable x de ellas, la fórmula (deltaP f1 f2 x) 
+-- es consecuencia de f1 y f2.
+--
+-- >>> quickCheck prop_adecuacion_deltaP
+-- +++ OK, passed 100 tests.
 prop_adecuacion_deltaP :: FProp -> FProp -> Bool
 prop_adecuacion_deltaP f1 f2 = 
     and [esConsecuencia [f1, f2] (deltaP f1 f2 x) |
          x <- variablesProp (f1 ∧ f2)]
 
--- (pares xs) es la lista de los pares de elementos xs xon el primero
+-- | (pares xs) es la lista de los pares de elementos xs con el primero
 -- menor o igual que el segundo. Por ejemplo,
---    *Polinomios> pares [1..4]
---    [(1,1),(1,2),(1,3),(1,4),(2,2),(2,3),(2,4),(3,3),(3,4),(4,4)]
+--
+-- >>> pares [1..4]
+-- [(1,1),(1,2),(1,3),(1,4),(2,2),(2,3),(2,4),(3,3),(3,4),(4,4)]
 pares :: [a] -> [(a,a)]
-pares []  = []
-pares [x] = [(x,x)]
-pares (x:xs) = [(x,y) | y <- (x:xs)] ++ (pares xs)
+pares []     = []
+pares [x]    = [(x,x)]
+pares (x:xs) = [(x,y) | y <- (x:xs)] ++ pares xs
 
--- (derivadas ps x) es la lista de los polinomios obtenidos aplicando
--- la regla delta a dos polinomios de ps respecto de la variable x.
+-- | (derivadas ps x) es la lista de los polinomios obtenidos aplicando
+-- la regla delta a dos polinomios de ps respecto de la variable x. Por
+-- ejemplo,
+--
+-- >>> derivadas [P[M["x","y"],M["y","z"]],P[M["a","y"],M["y"]]] "y"
+-- [x+z,a*x+a*z+x+z,1+a]
 derivadas :: [Polinomio] -> Variable -> [Polinomio]
-derivadas ps x = delete uno (nub [delta p1 p2 x | (p1,p2) <- pares ps])
+derivadas ps x =
+  delete uno (nub [delta p1 p2 x | (p1,p2) <- pares ps])
 
--- (derivadasP fs x) es la lista de las proposiciones obtenidas aplicando
--- la regla deltaP a dos fórmulas de fs respecto de la variable x.
+-- | (derivadasP fs x) es la lista de las proposiciones obtenidas aplicando
+-- la regla deltaP a dos fórmulas de fs respecto de la variable x. Por
+-- ejemplo,
+--
+-- >>> derivadasP [p → q ∨ r, r → p] "q"
+-- [¬(⊤ ↔ ¬((p ∧ r) ↔ r))]
+-- >>> derivadasP [p → q ∨ r, r → q] "q"
+-- []
 derivadasP :: [FProp] -> SimboloProposicional -> [FProp]
-derivadasP fs x = delete T (nub [deltaP f1 f2 x | (f1,f2) <- pares fs])
+derivadasP fs x =
+  delete T (nub [deltaP f1 f2 x | (f1,f2) <- pares fs])
 
--- (deltaRefutable fps) se verifica si ps es refutable mediante la regla
--- delta. 
+-- | (deltaRefutable ps) se verifica si ps es refutable mediante la regla
+-- delta. Por ejemplo,
+--
+-- >>> deltaRefutable [P[mUno,M["p"],M["p","q"]],P[M["p"]],P[mUno,M["q"]]]
+-- True
+-- >>> deltaRefutable [P[mUno,M["p"],M["p","q"]],P[M["p"]],P[mUno,M["r"]]]
+-- False
 deltaRefutable :: [Polinomio] -> Bool
 deltaRefutable [] = False
 deltaRefutable ps =
-    (elem cero ps) || (deltaRefutable (derivadas ps (eligeVariable ps)))
-    where eligeVariable ps = head (concat [variablesPol p | p <- ps])
+  cero `elem` ps || deltaRefutable (derivadas ps (eligeVariable ps))
+  where eligeVariable ps = head (concat [variablesPol p | p <- ps])
 
--- Definición equivalente
+-- | (deltaRefutableP fs) se verifica si fs es refutable mediante la regla
+-- delta. Por ejemplo,
+--
+-- >>> deltaRefutableP [p → q, p, no q]
+-- True
+-- >>> deltaRefutableP [p → q, p, no r]
+-- False
+deltaRefutableP :: [FProp] -> Bool
+deltaRefutableP fs = deltaRefutable [tr f | f <- fs]
+
+-- | (deltaRefutableP' fs) se verifica si fs es refutable mediante la regla
+-- delta. Por ejemplo,
+-- 
+-- >>> deltaRefutableP' [p → q, p, no q]
+-- True
+-- >>> deltaRefutableP' [p → q, p, no r]
+-- False
 deltaRefutableP' :: [FProp] -> Bool
 deltaRefutableP' [] = False
 deltaRefutableP' fs =
-    (elem F fs) || (deltaRefutableP' (derivadasP fs (eligeVariable fs)))
-    where eligeVariable fs = head (concat [variablesProp f | f <- fs])
+  F `elem` fs || deltaRefutableP' (derivadasP fs (eligeVariable fs))
+  where eligeVariable gs = head (concat [variablesProp g | g <- gs])
 
--- Las dos definiciones de deltaRefutableP son equivalentes.
+-- | Comprueba que las funciones deltaRefubleP y deltaRefutableP' son
+-- equivalentes.
+--
+-- >>> quickCheck prop_def_alt_deltaRefutableP
+-- +++ OK, passed 100 tests.
+prop_def_alt_deltaRefutableP :: [FProp] -> Bool
 prop_def_alt_deltaRefutableP fs =
-    deltaRefutableP fs == deltaRefutableP' fs
+  deltaRefutableP fs == deltaRefutableP' fs
 
+-- | Comprueba que la regla delta es adecuada y completa; es decir, para
+-- todo conjunto de fórmulas fs, fs es inconsistente si y sólo si es
+-- delta refutable.
+--
+-- >>> quickCheck prop_adecuacion_completitud_deltaP
+-- +++ OK, passed 100 tests.
 prop_adecuacion_completitud_deltaP :: [FProp] -> Bool
 prop_adecuacion_completitud_deltaP fs = 
-    esInconsistente fs == deltaRefutableP fs
+  esInconsistente fs == deltaRefutableP fs
 
--- (deltaDemostrable fs g) se verifica si g es demostrable a partir de
+-- | (deltaDemostrable fs g) se verifica si g es demostrable a partir de
 -- fs usando la regla delta. Por ejemplo,
---    *Polinomios> deltaDemostrable [p → q, q → r] (p → r)
---    True
+--
+-- >>> deltaDemostrable [p → q, q → r] (p → r)
+-- True
+-- >>> deltaDemostrable [p → q, q → r] (r → p)
+-- False
 deltaDemostrable :: [FProp] -> FProp -> Bool
-deltaDemostrable fs g = deltaRefutableP ((no g):fs)
+deltaDemostrable fs g =
+  deltaRefutableP ((no g):fs)
 
+-- | Comprueba que la regla delta es adecuada y completa; es decir, para
+-- todo conjunto de fórmulas fs y toda fórmula g, g es consecuencia de
+-- fs si y sólo si es g es delta demostrable a partir de fs.
+--
+-- >>> quickCheck prop_adecuacion_completitud_delta_2
+-- +++ OK, passed 100 tests.
 prop_adecuacion_completitud_delta_2 :: [FProp] -> FProp -> Bool
 prop_adecuacion_completitud_delta_2 fs g =
-    esConsecuencia fs g == deltaDemostrable fs g
+  esConsecuencia fs g == deltaDemostrable fs g
 
+-- | (deltaTeorema f) se verifica si f es un teorema mediante la regla
+-- delta; es decir, si la negación de f es delta refutable. Por ejemplo,
+--
+-- >>> deltaTeorema ((p → q) ∨ (q → p))
+-- True
+-- >>> deltaTeorema ((p → q) ∨ (q → r))
+-- True
+-- >>> deltaTeorema ((p → q) ∨ (r → q))
+-- False
 deltaTeorema :: FProp -> Bool
 deltaTeorema f = deltaRefutableP [no f]
 
+-- | Comprueba que la regla delta es adecuada y completa; es decir, que
+-- para toda fórmula f, f es válida si y sólo si es un delta teorema.
+--
+-- >>> quickCheck prop_adecuacion_completitud_delta_3
+-- +++ OK, passed 100 tests.
 prop_adecuacion_completitud_delta_3 :: FProp -> Bool
 prop_adecuacion_completitud_delta_3 f =
-    esValida f == deltaTeorema f
-
--- (deltaRefutableP fs) se verifica si fs es refutable mediante la regla
--- delta. 
-deltaRefutableP :: [FProp] -> Bool
-deltaRefutableP fs = deltaRefutable [tr f | f <- fs]
+  esValida f == deltaTeorema f
 
 -- ---------------------------------------------------------------------
 -- ** Delta refutabilidad usando soporte

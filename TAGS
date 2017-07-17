@@ -1,5 +1,5 @@
 
-./src/CLAI2009.hs,8001
+./src/CLAI2009.hs,8070
 module CLAI2009 CLAI200917,18
 type SimboloProposicional SimboloProposicional37,38
 data FProp FProp45,46
@@ -172,46 +172,47 @@ variablesPol variablesPol1034,1035
 variablesPol variablesPol1035,1036
 deltaP deltaP1045,1046
 deltaP deltaP1046,1047
-prop_adecuacion_deltaP prop_adecuacion_deltaP1052,1053
-prop_adecuacion_deltaP prop_adecuacion_deltaP1053,1054
-pares pares1061,1062
-pares pares1062,1063
-derivadas derivadas1068,1069
-derivadas derivadas1069,1070
-derivadasP derivadasP1073,1074
-derivadasP derivadasP1074,1075
-deltaRefutable deltaRefutable1078,1079
-deltaRefutable deltaRefutable1079,1080
-deltaRefutableP' deltaRefutableP'1085,1086
-deltaRefutableP' deltaRefutableP'1086,1087
-prop_def_alt_deltaRefutableP prop_def_alt_deltaRefutableP1092,1093
-prop_adecuacion_completitud_deltaP prop_adecuacion_completitud_deltaP1095,1096
-prop_adecuacion_completitud_deltaP prop_adecuacion_completitud_deltaP1096,1097
-deltaDemostrable deltaDemostrable1103,1104
-deltaDemostrable deltaDemostrable1104,1105
-prop_adecuacion_completitud_delta_2 prop_adecuacion_completitud_delta_21106,1107
-prop_adecuacion_completitud_delta_2 prop_adecuacion_completitud_delta_21107,1108
-deltaTeorema deltaTeorema1110,1111
-deltaTeorema deltaTeorema1111,1112
-prop_adecuacion_completitud_delta_3 prop_adecuacion_completitud_delta_31113,1114
-prop_adecuacion_completitud_delta_3 prop_adecuacion_completitud_delta_31114,1115
-deltaRefutableP deltaRefutableP1119,1120
-deltaRefutableP deltaRefutableP1120,1121
-deltaRefutableSop deltaRefutableSop1126,1127
-deltaRefutableSop deltaRefutableSop1127,1128
-deltaRefutableSop' deltaRefutableSop'1130,1131
-deltaRefutableSop' deltaRefutableSop'1131,1132
-derivadasPolConjunto derivadasPolConjunto1147,1148
-derivadasPolConjunto derivadasPolConjunto1148,1149
-derivadasPolPol derivadasPolPol1151,1152
-derivadasPolPol derivadasPolPol1152,1153
-prop_deltaRefutableSop prop_deltaRefutableSop1156,1157
-deltaRefutablePSop deltaRefutablePSop1161,1162
-deltaRefutablePSop deltaRefutablePSop1162,1163
-prop_adecuacion_completitud_deltaPSop prop_adecuacion_completitud_deltaPSop1164,1165
-prop_adecuacion_completitud_deltaPSop prop_adecuacion_completitud_deltaPSop1165,1166
-palomar palomar1172,1173
-palomar palomar1173,1174
+prop_adecuacion_deltaP prop_adecuacion_deltaP1058,1059
+prop_adecuacion_deltaP prop_adecuacion_deltaP1059,1060
+pares pares1068,1069
+pares pares1069,1070
+derivadas derivadas1079,1080
+derivadas derivadas1080,1081
+derivadasP derivadasP1091,1092
+derivadasP derivadasP1092,1093
+deltaRefutable deltaRefutable1102,1103
+deltaRefutable deltaRefutable1103,1104
+deltaRefutableP deltaRefutableP1115,1116
+deltaRefutableP deltaRefutableP1116,1117
+deltaRefutableP' deltaRefutableP'1125,1126
+deltaRefutableP' deltaRefutableP'1126,1127
+prop_def_alt_deltaRefutableP prop_def_alt_deltaRefutableP1136,1137
+prop_def_alt_deltaRefutableP prop_def_alt_deltaRefutableP1137,1138
+prop_adecuacion_completitud_deltaP prop_adecuacion_completitud_deltaP1146,1147
+prop_adecuacion_completitud_deltaP prop_adecuacion_completitud_deltaP1147,1148
+deltaDemostrable deltaDemostrable1157,1158
+deltaDemostrable deltaDemostrable1158,1159
+prop_adecuacion_completitud_delta_2 prop_adecuacion_completitud_delta_21167,1168
+prop_adecuacion_completitud_delta_2 prop_adecuacion_completitud_delta_21168,1169
+deltaTeorema deltaTeorema1180,1181
+deltaTeorema deltaTeorema1181,1182
+prop_adecuacion_completitud_delta_3 prop_adecuacion_completitud_delta_31188,1189
+prop_adecuacion_completitud_delta_3 prop_adecuacion_completitud_delta_31189,1190
+deltaRefutableSop deltaRefutableSop1196,1197
+deltaRefutableSop deltaRefutableSop1197,1198
+deltaRefutableSop' deltaRefutableSop'1200,1201
+deltaRefutableSop' deltaRefutableSop'1201,1202
+derivadasPolConjunto derivadasPolConjunto1217,1218
+derivadasPolConjunto derivadasPolConjunto1218,1219
+derivadasPolPol derivadasPolPol1221,1222
+derivadasPolPol derivadasPolPol1222,1223
+prop_deltaRefutableSop prop_deltaRefutableSop1226,1227
+deltaRefutablePSop deltaRefutablePSop1231,1232
+deltaRefutablePSop deltaRefutablePSop1232,1233
+prop_adecuacion_completitud_deltaPSop prop_adecuacion_completitud_deltaPSop1234,1235
+prop_adecuacion_completitud_deltaPSop prop_adecuacion_completitud_deltaPSop1235,1236
+palomar palomar1242,1243
+palomar palomar1243,1244
 
 ./Setup.hs,15
 main main1,2

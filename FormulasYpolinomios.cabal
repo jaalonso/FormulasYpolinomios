@@ -30,6 +30,7 @@ library
   exposed-modules:
       CLAI2009
   other-modules:
+      Logica
       Paths_FormulasYpolinomios
   build-depends:
       base >=4.7 && <5

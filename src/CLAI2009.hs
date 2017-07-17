@@ -523,7 +523,7 @@ monomios' = do xs <- listOf variables
 prop_MonomiosGeneraMonomios :: Monomio -> Bool
 prop_MonomiosGeneraMonomios m = esMonomio m
 
--- Los monomios son arbitrarios.
+-- | Los monomios son arbitrarios.
 instance Arbitrary Monomio where
   arbitrary = monomios
 
@@ -640,11 +640,11 @@ polinomios' = do xs <- listOf1 monomios
 prop_PolinomiosGeneraPolinomios :: Polinomio -> Bool
 prop_PolinomiosGeneraPolinomios p = esPolinomio p
 
--- Los polinomios son arbitrarios.
+-- | Los polinomios son arbitrarios.
 instance Arbitrary Polinomio where
   arbitrary = polinomios
 
--- Para facilitar la escritura, se hace Polinomio una instancia de
+-- | Para facilitar la escritura, se hace Polinomio una instancia de
 -- la clase Num. Las funciones suma y producto se definen a continuación.
 instance Num Polinomio where
   (+) = suma 
@@ -1190,105 +1190,6 @@ prop_adecuacion_completitud_delta_3 :: FProp -> Bool
 prop_adecuacion_completitud_delta_3 f =
   esValida f == deltaTeorema f
 
--- ---------------------------------------------------------------------
--- ** Delta refutabilidad usando soporte
--- ---------------------------------------------------------------------
-
-deltaRefutableSop :: [Polinomio] -> Bool
-deltaRefutableSop ps =
-    deltaRefutableSop' ps []
-
-deltaRefutableSop' :: [Polinomio] -> [Polinomio] -> Bool
-deltaRefutableSop' soporte usables
-    | null soporte    = False
-    | elem cero soporte = True
-    | otherwise       =
-        deltaRefutableSop' soporte' usables'
-        where actual   = head soporte
-              usables' = union [actual] usables
-              soporte' = union (tail soporte)
-                               [p 
-                                | p <- derivadasPolConjunto
-                                       actual 
-                                       usables'
-                                , p /= uno
-                                , notElem p soporte
-                                , notElem p usables']
-
-derivadasPolConjunto :: Polinomio -> [Polinomio] -> [Polinomio]
-derivadasPolConjunto p qs = 
-    nub (concat [derivadasPolPol p q | q <- qs])
-
-derivadasPolPol :: Polinomio -> Polinomio -> [Polinomio]
-derivadasPolPol p q =
-    nub [delta p q x | x <- variablesPol (p+q)]
-
--- Las definición con soporte es equivalente son equivalentes.
-prop_deltaRefutableSop ps =
-    deltaRefutable ps == deltaRefutableSop ps
-
--- (deltaRefutablePSop fs) se verifica si fs es refutable mediante la regla
--- delta. 
-deltaRefutablePSop :: [FProp] -> Bool
-deltaRefutablePSop fs = deltaRefutableSop [tr f | f <- fs]
-
-prop_adecuacion_completitud_deltaPSop :: [FProp] -> Bool
-prop_adecuacion_completitud_deltaPSop fs = 
-    esInconsistente fs == deltaRefutableP fs
-
--- ---------------------------------------------------------------------
--- ** Problema del palomar
--- ---------------------------------------------------------------------
-
-palomar :: [FProp]
-palomar = [-- La paloma 1 está en alguna hueco:
-           p1h1 ∨ (p1h2 ∨ p1h3),
-                  
-           -- La paloma 2 está en alguna hueco:
-           p2h1 ∨ (p2h2 ∨ p2h3),
-           
-           -- La paloma 3 está en alguna hueco:
-           p3h1 ∨ (p3h2 ∨ p3h3),
-           
-           -- La paloma 4 está en alguna hueco:
-           p4h1 ∨ (p4h2 ∨ p4h3),
-
-           -- No hay dos palomas en la hueco 5:
-           (no p1h1) ∨ (no p2h1),
-           (no p1h1) ∨ (no p3h1),
-           (no p1h1) ∨ (no p4h1),
-           (no p2h1) ∨ (no p3h1),
-           (no p2h1) ∨ (no p4h1),
-           (no p3h1) ∨ (no p4h1),
-           
-           -- No hay dos palomas en la hueco 6:
-           (no p1h2) ∨ (no p2h2),
-           (no p1h2) ∨ (no p3h2),
-           (no p1h2) ∨ (no p4h2),
-           (no p2h2) ∨ (no p3h2),
-           (no p2h2) ∨ (no p4h2),
-           (no p3h2) ∨ (no p4h2),
-           
-           -- No hay dos palomas en la hueco 7:
-           (no p1h3) ∨ (no p2h3),
-           (no p1h3) ∨ (no p3h3),
-           (no p1h3) ∨ (no p4h3),
-           (no p2h3) ∨ (no p3h3),
-           (no p2h3) ∨ (no p4h3),
-           (no p3h3) ∨ (no p4h3)]
-    where p1h1 = Atom "p1h1"
-          p1h2 = Atom "p1h2"
-          p1h3 = Atom "p1h3"
-          p2h1 = Atom "p2h1"
-          p2h2 = Atom "p2h2"
-          p2h3 = Atom "p2h3"
-          p3h1 = Atom "p3h1"
-          p3h2 = Atom "p3h2"
-          p3h3 = Atom "p3h3"
-          p4h1 = Atom "p4h1"
-          p4h2 = Atom "p4h2"
-          p4h3 = Atom "p4h3"
-          
 -- ---------------------------------------------------------------------
 -- * Bibliografía
 -- ---------------------------------------------------------------------

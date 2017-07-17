@@ -425,6 +425,8 @@ monomios' :: Gen Monomio
 --   </pre>
 prop_MonomiosGeneraMonomios :: Monomio -> Bool
 
+-- | Los monomios son arbitrarios.
+
 -- | Los polinomios son sumas de monomios distintos y ordenados y se
 --   representan por listas ordenadas de monomios distintos,
 data Polinomio
@@ -536,6 +538,11 @@ polinomios' :: Gen Polinomio
 --   +++ OK, passed 100 tests.
 --   </pre>
 prop_PolinomiosGeneraPolinomios :: Polinomio -> Bool
+
+-- | Los polinomios son arbitrarios.
+
+-- | Para facilitar la escritura, se hace Polinomio una instancia de la
+--   clase Num. Las funciones suma y producto se definen a continuación.
 
 -- | (suma p q) es la suma de los polinomios p y q. Por ejemplo,
 --   
@@ -1044,14 +1051,6 @@ deltaTeorema :: FProp -> Bool
 --   +++ OK, passed 100 tests.
 --   </pre>
 prop_adecuacion_completitud_delta_3 :: FProp -> Bool
-deltaRefutableSop :: [Polinomio] -> Bool
-deltaRefutableSop' :: [Polinomio] -> [Polinomio] -> Bool
-derivadasPolConjunto :: Polinomio -> [Polinomio] -> [Polinomio]
-derivadasPolPol :: Polinomio -> Polinomio -> [Polinomio]
-prop_deltaRefutableSop :: [Polinomio] -> Bool
-deltaRefutablePSop :: [FProp] -> Bool
-prop_adecuacion_completitud_deltaPSop :: [FProp] -> Bool
-palomar :: [FProp]
 instance GHC.Classes.Ord CLAI2009.Polinomio
 instance GHC.Classes.Eq CLAI2009.Polinomio
 instance GHC.Classes.Ord CLAI2009.Monomio

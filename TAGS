@@ -1,5 +1,5 @@
 
-./src/CLAI2009.hs,8070
+./src/CLAI2009.hs,7303
 module CLAI2009 CLAI200917,18
 type SimboloProposicional SimboloProposicional37,38
 data FProp FProp45,46
@@ -198,21 +198,6 @@ deltaTeorema deltaTeorema1180,1181
 deltaTeorema deltaTeorema1181,1182
 prop_adecuacion_completitud_delta_3 prop_adecuacion_completitud_delta_31188,1189
 prop_adecuacion_completitud_delta_3 prop_adecuacion_completitud_delta_31189,1190
-deltaRefutableSop deltaRefutableSop1196,1197
-deltaRefutableSop deltaRefutableSop1197,1198
-deltaRefutableSop' deltaRefutableSop'1200,1201
-deltaRefutableSop' deltaRefutableSop'1201,1202
-derivadasPolConjunto derivadasPolConjunto1217,1218
-derivadasPolConjunto derivadasPolConjunto1218,1219
-derivadasPolPol derivadasPolPol1221,1222
-derivadasPolPol derivadasPolPol1222,1223
-prop_deltaRefutableSop prop_deltaRefutableSop1226,1227
-deltaRefutablePSop deltaRefutablePSop1231,1232
-deltaRefutablePSop deltaRefutablePSop1232,1233
-prop_adecuacion_completitud_deltaPSop prop_adecuacion_completitud_deltaPSop1234,1235
-prop_adecuacion_completitud_deltaPSop prop_adecuacion_completitud_deltaPSop1235,1236
-palomar palomar1242,1243
-palomar palomar1243,1244
 
 ./Setup.hs,15
 main main1,2

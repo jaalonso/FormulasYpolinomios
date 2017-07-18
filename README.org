@@ -1,7 +1,17 @@
 #+TITLE: Sistema certificado de decisión proposicional basado en polinomios
 
-Este repositorio contiene el código correspondiente al artículo [[./doc/CLAI2009.pdf][Sistema
-certificado de decisión proposicional basado en polinomios]] presentado en el
-CLAI2009 (Workshop on Computational Logic and Artificial Intelligence).
+Sistema de decisión proposicional basado en la transformación de fórmulas a
+polinomios y usando la regla de independencia. Las propiedades están
+verificadas con QuickCheck.
 
+El código se describe en el artículo [Sistema certificado de decisión
+proposicional basado en polinomios](http://bit.ly/2u1inJt) presentado en
+el CLAI2009 (Workshop on Computational Logic and Artificial
+Intelligence).
 
+El orden de lectura de los módulos es el siguiente:
+
++ [[./src/Logica.hs][Logica]]: Lógica proposicional.
++ [[./src/PolinomiosF2.hs][PolinomiosF2]]: Polinomios en Z2/(x1^1-x1,...,xn^2-xn).
++ [[./src/Transformaciones][Transformaciones]]: Transformaciones entre fórmulas y polinomios. 
++ [[./src/DeltaDeduccion.hs][DeltaDeduccion]]: Deducción con la regla delta (o de la independencia). 

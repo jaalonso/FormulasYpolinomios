@@ -11,7 +11,18 @@ module Transformaciones where
 -- Librerías auxiliares                                               --
 -- ---------------------------------------------------------------------
 
-import Logica
+import Logica       ( FProp (..)
+                    , SimboloProposicional
+                    , (↔)
+                    , no
+                    , equivalentes
+                    , p
+                    , q
+                    , r
+                    , (∧)
+                    , (∨)
+                    , (→)
+                    )
 import PolinomiosF2
 
 import Test.QuickCheck

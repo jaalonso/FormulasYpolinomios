@@ -39,6 +39,8 @@ library:
   - PolinomiosF2
   - Transformaciones
   - DeltaDeduccion
+  other-modules:
+  - CLAI2009
 tests:
   doctests:
     main: Doctest.hs

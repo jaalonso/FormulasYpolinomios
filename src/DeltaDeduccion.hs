@@ -11,9 +11,41 @@ module DeltaDeduccion where
 -- Librerías auxiliares                                               --
 -- ---------------------------------------------------------------------
 
-import Logica
-import PolinomiosF2
-import Transformaciones
+import Logica           ( FProp ( T
+                                , F
+                                , Atom
+                                , Neg
+                                , Conj
+                                , Disj
+                                , Impl
+                                , Equi
+                                )
+                        , SimboloProposicional
+                        , equivalentes
+                        , esConsecuencia
+                        , esInconsistente
+                        , esValida
+                        , no
+                        , p
+                        , q
+                        , r
+                        , simbolosPropForm
+                        , (∧)
+                        , (∨)
+                        , (→)
+                        , (↔)
+                        )
+import PolinomiosF2     ( Monomio (M)
+                        , Polinomio (P)
+                        , Variable
+                        , cero
+                        , deriv
+                        , mUno
+                        , uno
+                        )
+import Transformaciones ( theta
+                        , tr
+                        )
 
 import Data.List ( delete
                  , union

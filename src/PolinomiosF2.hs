@@ -11,16 +11,14 @@ module PolinomiosF2 where
 -- Librerías auxiliares                                               --
 -- ---------------------------------------------------------------------
 
-import Control.Monad ( liftM
-                     , liftM2)
-import Data.Char     ( chr
-                     )
-import Data.List     ( delete
-                     , insert
-                     , nub
-                     , sort
-                     , union
-                     )
+import Data.Char ( chr
+                 )
+import Data.List ( delete
+                 , insert
+                 , nub
+                 , sort
+                 , union
+                 )
 import Test.QuickCheck
 
 -- ---------------------------------------------------------------------

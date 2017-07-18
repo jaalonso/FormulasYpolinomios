@@ -18,7 +18,9 @@ description: |
   * [Transformaciones](Transformaciones.html): Transformaciones entre fórmulas
     y polinomios. 
   * [DeltaDeduccion](DeltaDeduccion.html): Deducción con la regla delta (o de
-    la independencia). 
+    la independencia).
+
+  El repositorio con el código se encuentra en [https://github.com/jaalonso/FormulasYpolinomios](https://github.com/jaalonso/FormulasYpolinomios).
    
 category: Logic, Math
 author: José A. Alonso

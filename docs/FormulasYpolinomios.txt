@@ -23,6 +23,9 @@
 --   <li><a>DeltaDeduccion</a>: Deducción con la regla delta (o de la
 --   independencia).</li>
 --   </ul>
+--   
+--   El repositorio con el código se encuentra en
+--   <a>https://github.com/jaalonso/FormulasYpolinomios</a>.
 @package FormulasYpolinomios
 @version 0.1.0.0
 

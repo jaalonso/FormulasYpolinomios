@@ -21,7 +21,9 @@ description:         Sistema de decisión proposicional basado en la transformac
                      * [Transformaciones](Transformaciones.html): Transformaciones entre fórmulas
                        y polinomios. 
                      * [DeltaDeduccion](DeltaDeduccion.html): Deducción con la regla delta (o de
-                       la independencia). 
+                       la independencia).
+                     .
+                     El repositorio con el código se encuentra en [https://github.com/jaalonso/FormulasYpolinomios](https://github.com/jaalonso/FormulasYpolinomios).
                      .
 homepage:            https://github.com/jaalonso/FormulasYpolinomios#readme
 bug-reports:         https://github.com/jaalonso/FormulasYpolinomios/issues

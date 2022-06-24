@@ -1,5 +1,5 @@
 #+TITLE: Sistema certificado de decisión proposicional basado en polinomios
-
+ 
 Sistema de decisión proposicional basado en la transformación de fórmulas a
 polinomios y usando la regla de independencia. Las propiedades están
 verificadas con QuickCheck.
